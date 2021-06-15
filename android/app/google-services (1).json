@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "12590705324",
+    "project_id": "diario-eletronico-158bc",
+    "storage_bucket": "diario-eletronico-158bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12590705324:android:d8215b8a7540cff1144d09",
+        "android_client_info": {
+          "package_name": "com.example.app_tcc_diarioeletronico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12590705324-4a9navlln7s0qnto3dsuu0c8ndd6g3sb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWpFQAYX7CNL9PpOQ_znA123u74lxBRjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12590705324-4a9navlln7s0qnto3dsuu0c8ndd6g3sb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
