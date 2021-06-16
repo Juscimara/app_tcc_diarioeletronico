@@ -1,3 +1,6 @@
+import 'package:app_tcc_diarioeletronico/screens/configuracao_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'Flutter Demo Home Page'),
+      home: ConfiguracaoScreen(),
     );
   }
 }
