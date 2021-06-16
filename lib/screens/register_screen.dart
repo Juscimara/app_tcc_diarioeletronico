@@ -21,26 +21,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _streetController = TextEditingController();
   TextEditingController _numController = TextEditingController();
   TextEditingController _districtController = TextEditingController();
-  TextEditingController _ufController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
   TextEditingController _cpfController = TextEditingController();
 
   @override
-  void initState() {
-    _cityController.addListener(() {
-      setState(() {
-        _city = _cityController.text;
-      });
-    });
-    _ufController.addListener(() {
-      setState(() {
-        _uf = _ufController.text;
-      });
-    });
-    super.initState();
-  }
-
-  String _type = "Doador", _city = "Alfenas", _uf = "MG";
   bool _loading = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -223,7 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _loading
                     ? CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(
-                            Color(0xFF31CF2B)),
+                            Colors.yellow[700]),
                       )
                     : Column(
                         children: [
