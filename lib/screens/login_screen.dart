@@ -1,138 +1,181 @@
-import 'package:app_tcc_diarioeletronico/screens/configuracao_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
-import 'package:app_tcc_diarioeletronico/services/autenticacao_service.dart';
+import 'package:app_tcc_diarioeletronico/components/button.dart';
+import 'package:app_tcc_diarioeletronico/components/input.dart';
+import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
+import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
+  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  bool stayConnected = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
 
-  bool _isProcessing = false;
-
-  @override
-  void initState() {
-    User user = FirebaseAuth.instance.currentUser;
-
-    /*if (user != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(
-            user: user,
+  alert(msg) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Atenção'),
+        content: Text(msg),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => {Navigator.pop(context)},
+            child: Text('OK'),
           ),
-        ),
-      );
-    }*/
-    super.initState();
+        ],
+      ),
+    );
+  }
+
+  Future<void> signIn() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      if (_formkey.currentState.validate()) {
+        User user = await AuthService.signInUser(
+          email: _emailController.text,
+          senha: _passwordController.text,
+        );
+        if( user != null )
+          Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+        else
+          alert("msg");
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } on FirebaseException catch (e) {
+      setState(() {
+        isLoading = true;
+      });
+      var msg = '';
+      if (e.code == 'user-not-found') {
+        msg = 'Usuário não encontrado';
+      } else if (e.code == 'wrong-password') {
+        msg = "Senha incorreta";
+      } else {
+        msg = "Ouve um erro inesperado, tente novamente";
+      }
+      alert(msg);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF26A69A),
-        title: Text('Configurações'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 24.0),
-              child:
-              Image.asset(
-              'images/logo.png',
-              width: 230,
-              height: 140,
-              fit:BoxFit.cover,
-            ),
-              //child: Text(
-              //  'Login',
-             //   style: Theme.of(context).textTheme.headline1,
-             // ),
-            ),
-            Column(
-              children: <Widget>[
-                TextField(
-                  controller: _emailTextController,
-                  decoration: InputDecoration(
-                    hintText: "Email",
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextField(
-                  controller: _passwordTextController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: "Senha",
-                  ),
-                ),
-                SizedBox(height: 24.0),
-                _isProcessing
-                    ? CircularProgressIndicator()
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                setState(() {
-                                  _isProcessing = true;
-                                });
-
-                                User user =
-                                    await AutenticacaoService.signInUsuario(
-                                  email: _emailTextController.text,
-                                  senha: _passwordTextController.text,
-                                );
-
-                                setState(() {
-                                  _isProcessing = false;
-                                });
-
-                                if (user != null) {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>ConfiguracaoScreen(),
-                                      //builder: (context) => HospitalScreen(),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: Text(
-                                'Entrar',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 24.0),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Form(
+                  key: _formkey,
+                  child: Column(
+                    children: [
+                      Input(
+                        controller: _emailController,
+                        text: 'E-mail',
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Email obrigatório';
+                          }
+                          return null;
+                        },
+                      ),
+                      Input(
+                        controller: _passwordController,
+                        text: 'Senha',
+                        obscureText: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Senha obrigatória';
+                          } else if (value.length < 6) {
+                            return 'Senha deve ter no mínimo 6 caracteres';
+                          }
+                          return null;
+                        },
+                      ),
+                      Button(
+                        width: MediaQuery.of(context).size.width,
+                        heigth: 50,
+                        widget: Center(
+                          child: !isLoading
+                              ? Text(
+                                  'LOGAR',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
                                   ),
-                                );
-                              },
-                              child: Text(
-                                'Voltar',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+                                )
+                              : SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                        onPress: () {
+                          signIn();
+                        },
+                      ),
+                    ],
+                  )),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(top: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Não tem conta?',
+                      style: TextStyle(
+                        color: Color(0xFF31CF2B),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                        child: Text(
+                          'Cadastre-se',
+                          style: TextStyle(
+                            color: Color(0xFF31CF2B),
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w700,
                           ),
-                        ],
-                      )
-              ],
-            ),
-          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
