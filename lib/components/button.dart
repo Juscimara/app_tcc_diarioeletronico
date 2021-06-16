@@ -20,11 +20,11 @@ class Button extends StatelessWidget {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                     side: BorderSide(
-                      color: Color(0xFF31CF2B),
+                      color: Colors.teal[300],
                     )),
               ),
               backgroundColor: MaterialStateProperty.all<Color>(
-                Color(0xFF31CF2B),
+                Colors.teal[300],
               ),
             ),
             child: widget,

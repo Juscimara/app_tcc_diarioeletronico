@@ -1,3 +1,4 @@
+import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +12,21 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Column (
           children : [
-            Text(" "), //Espaço          
+            Text(" "),            
+        Button(
+                width: MediaQuery.of(context).size.width,
+                heigth: 50,
+                widget: Text(
+                  'Sair',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                onPress: () {
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                }),      
           ],
         ),
       ),

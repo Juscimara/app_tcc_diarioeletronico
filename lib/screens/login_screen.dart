@@ -1,7 +1,6 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
-import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _emailController.text,
           senha: _passwordController.text,
         );
-        if( user != null )
+        if (user != null)
           Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
         else
           alert("msg");
@@ -73,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[50],
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -81,6 +81,23 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text(
+                "Diário Eletrônico",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 32,
+                  color: Colors.teal[300],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24.0),
+                child: Image.asset(
+                  'images/blood.png',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+              ),
               Form(
                   key: _formkey,
                   child: Column(
@@ -115,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         widget: Center(
                           child: !isLoading
                               ? Text(
-                                  'LOGAR',
+                                  'Logar',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -141,14 +158,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   )),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: 8),
+                margin: EdgeInsets.only(top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Não tem conta?',
                       style: TextStyle(
-                        color: Color(0xFF31CF2B),
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
@@ -164,7 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           'Cadastre-se',
                           style: TextStyle(
-                            color: Color(0xFF31CF2B),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 18,
+                            color: Colors.teal[500],
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.w700,
                           ),

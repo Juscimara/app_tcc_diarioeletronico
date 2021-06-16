@@ -82,6 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[50],
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -94,11 +95,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Text(
-                    "Cadastre-se",
+                    "Cadastro de Paciente",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 32,
-                      color: Color(0xFF31CF2B),
+                      color: Colors.teal[300],
                     ),
                   ),
                 ),
@@ -227,25 +228,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     : Column(
                         children: [
                           Button(
-                            width: MediaQuery.of(context).size.width,
-                            heigth: 50,
-                            widget: Text(
-                              'VOLTAR',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPress: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          Button(
                               width: MediaQuery.of(context).size.width,
                               heigth: 50,
                               widget: Text(
-                                'CONTINUAR',
+                                'Cadastrar',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,

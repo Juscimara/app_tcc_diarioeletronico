@@ -20,26 +20,26 @@ class Input extends StatelessWidget {
       child: Container(
         child: TextFormField(
           controller: controller,
-          cursorColor: Color(0xFF31CF2B),
+          cursorColor: Colors.yellow[700],
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 10),
             labelText: text,
             errorText: error,
             border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF31CF2B)),
+              borderSide: BorderSide(color: Colors.yellow[700]),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF31CF2B)),
+              borderSide: BorderSide(color: Colors.yellow[700]),
             ),
             labelStyle: TextStyle(
-              color: Color(0xFF31CF2B),
+              color: Colors.black,
             ),
           ),
           obscureText: obscureText == null ? false : obscureText,
           keyboardType: keyboardType,
           style: TextStyle(
-            color: Color(0xFF31CF2B),
+            color: Colors.black,
           ),
           validator: (value) => validator(value),
         ),
