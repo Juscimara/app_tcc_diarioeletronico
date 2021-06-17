@@ -7,15 +7,16 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final glicemia_list = Provider.of<List<Bloodglucose>>(context);
+    final glicemiaList = Provider.of<List<MeasuredBloodglucose>>(context);
+    print(glicemiaList.toList());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
         title: Text("Home"),
       ),
-      body: (glicemia_list != null)
+      body: (glicemiaList != null)
           ? ListView.builder(
-              itemCount: glicemia_list.length,
+              itemCount: glicemiaList.length,
               itemBuilder: (BuildContext context, int i) {
                 return Container(
                   decoration: BoxDecoration(
@@ -26,14 +27,14 @@ class HomeScreen extends StatelessWidget {
                   child: ListTile(
                     isThreeLine: true,
                     title: Text(
-                      glicemia_list[i].nome,
+                      glicemiaList[i].nome,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
                     subtitle: Text(
-                      glicemia_list[i].glicemia,
+                      glicemiaList[i].glicemia,
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 18,
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => BloodGlucoseScreen(
-                                    glicemia: glicemia_list[i]),
+                                    glicemia: null),
                               ),
                             )),
                   ),

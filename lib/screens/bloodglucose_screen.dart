@@ -9,14 +9,16 @@ import 'package:provider/provider.dart';
 class BloodGlucoseScreen extends StatefulWidget {
   Bloodglucose glicemia;
   BloodGlucoseScreen({this.glicemia, Key key}) : super(key: key);
+
   @override
   _BloodGlucoseState createState() => _BloodGlucoseState();
 }
 
 class _BloodGlucoseState extends State<BloodGlucoseScreen> {
+  TextEditingController _bloodglucoseController = TextEditingController();
+
   @override
   void initState() {
-    // final bloodglucoseProvider = Provider.of<bloodglucose>(context, listen: false);
     super.initState();
   }
 
@@ -65,7 +67,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                     child: Column(
                   children: [
                     Input(
-                      // controller: _bloodglucoseController,
+                      controller: _bloodglucoseController,
                       text: 'Glicemia Aferida',
                       keyboardType: TextInputType.text,
                       validator: (value) {

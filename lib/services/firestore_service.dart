@@ -24,7 +24,9 @@ class FirestoreService {
   }
 
   Stream<List<MeasuredBloodglucose>> getBloodglucose() {
-    return _db.collection('glicemia').snapshots().map((snapshot) => snapshot.docs
+    String id = AuthService.getCurrentUser().uid;
+    return _db.collection('usuarios').doc(id)
+    .collection('glicemia').snapshots().map((snapshot) => snapshot.docs
         .map((document) => MeasuredBloodglucose.fromFirestore(document.data()))
         .toList());
   }
