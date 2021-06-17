@@ -85,33 +85,6 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                   widget: Center(
                     child: !isLoading
                         ? Text(
-                            'Cancelar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          )
-                        : SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.white,
-                              ),
-                            ),
-                          ),
-                  ),
-                  /* onPress: () {
-                          signIn();
-                        }, */
-                ),
-                Button(
-                  width: MediaQuery.of(context).size.width,
-                  heigth: 50,
-                  widget: Center(
-                    child: !isLoading
-                        ? Text(
                             'Salvar',
                             style: TextStyle(
                               fontSize: 16,
