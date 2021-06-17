@@ -1,3 +1,4 @@
+import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               leading: Icon(Icons.person_pin),
               title: Text("Glicemia"),
               onTap: () {
-                //Navigator
+                MaterialPageRoute(builder: (context)=> BloodGlucoseScreen());
               },
             ),
             ListTile(

@@ -1,84 +1,24 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
-import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key key}) : super(key: key);
-
+class BloodGlucoseScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _BloodGlucoseState createState() => _BloodGlucoseState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _streetController = TextEditingController();
-  TextEditingController _numController = TextEditingController();
-  TextEditingController _districtController = TextEditingController();
-  TextEditingController _ufController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _cpfController = TextEditingController();
-
+class _BloodGlucoseState extends State<BloodGlucoseScreen> {
+  
   @override
   void initState() {
-    _cityController.addListener(() {
-      setState(() {
-        _city = _cityController.text;
-      });
-    });
-    _ufController.addListener(() {
-      setState(() {
-        _uf = _ufController.text;
-      });
-    });
     super.initState();
   }
 
-  String dropdownValue = 'One';
-  String _type = "Doador", _city = "Alfenas", _uf = "MG";
+  String dropdownValue = 'Adicionar Glicemia';
   bool _loading = false;
-  final _formKey = GlobalKey<FormState>();
-
-  Future<void> onRegister() async {
-    setState(() {
-      _loading = true;
-    });
-
-    if (_formKey.currentState.validate()) {
-      User authUser = await AuthService.signUpUser(
-        email: _emailController.text,
-        senha: _passwordController.text,
-      );
-
-      if (authUser != null) {
-        UserData user;
-        user = UserData(
-          id: authUser.uid,
-          name: _nameController.text,
-          email: _emailController.text,
-          phone: _phoneController.text,
-          password: _passwordController.text,
-          street: _streetController.text,
-          num: _numController.text,
-          district: _districtController.text,
-          cpf: _cpfController.text,
-        );
-        await FirestoreService().saveUser(user);
-
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
-      }
-    }
-
-    setState(() {
-      _loading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               width: MediaQuery.of(context).size.width,
                               heigth: 50,
                               widget: Text(
-                                'Cadastrar',
+                                'Salvar',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
