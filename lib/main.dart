@@ -1,4 +1,5 @@
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/providers/bloodglucose_model.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/login_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/register_screen.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => MeasuredBloodglucose()),
+        ChangeNotifierProvider(create: (context) => Bloodglucose()),
         StreamProvider(create: (context) => firestoreservice.getBloodglucose()),
       ], 
       child:

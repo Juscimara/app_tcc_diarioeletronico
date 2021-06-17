@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BloodGlucoseScreen extends StatefulWidget {
+  Bloodglucose glicemia;
+  BloodGlucoseScreen({this.glicemia, Key key}) : super(key: key);
   @override
   _BloodGlucoseState createState() => _BloodGlucoseState();
 }
