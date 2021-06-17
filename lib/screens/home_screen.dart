@@ -30,10 +30,12 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.person_pin),
               title: Text("Glicemia"),
-              onTap: () {
-                MaterialPageRoute(builder: (context)=> BloodGlucoseScreen());
-              },
-            ),
+             onTap: () {
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BloodGlucoseScreen()),
+                );
+             }),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Sair"),
