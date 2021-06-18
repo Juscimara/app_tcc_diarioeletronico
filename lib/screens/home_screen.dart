@@ -8,7 +8,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final glicemiaList = Provider.of<List<MeasuredBloodglucose>>(context);
-    print(glicemiaList.toList());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
@@ -46,8 +45,8 @@ class HomeScreen extends StatelessWidget {
                         iconSize: 28,
                         onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => BloodGlucoseScreen(
-                                    glicemia: null),
+                                builder: (context) =>
+                                    BloodGlucoseScreen(glicemia: null),
                               ),
                             )),
                   ),
@@ -55,17 +54,6 @@ class HomeScreen extends StatelessWidget {
               },
             )
           : Center(child: Text('Nenhum acompanhamento econtrado!')),
-      floatingActionButton: FloatingActionButton(
-        child: IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => BloodGlucoseScreen(glicemia: null),
-            ),
-          ),
-        ),
-        backgroundColor: Colors.green,
-      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
