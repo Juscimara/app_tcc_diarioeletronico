@@ -8,7 +8,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final glicemiaList = Provider.of<List<MeasuredBloodglucose>>(context);
-    print(glicemiaList.toList());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
