@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
-        title: Text("Home"),
+        title: Text("Glicemia"),
       ),
       body: (glicemiaList != null)
           ? ListView.builder(
@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                   child: ListTile(
                     isThreeLine: true,
                     title: Text(
-                      glicemiaList[i].nome,
+                      glicemiaList[i].horario,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -40,16 +40,6 @@ class HomeScreen extends StatelessWidget {
                         fontSize: 18,
                       ),
                     ),
-                    trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        color: Colors.yellow[900],
-                        iconSize: 28,
-                        onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BloodGlucoseScreen(
-                                    glicemia: null),
-                              ),
-                            )),
                   ),
                 );
               },
@@ -64,7 +54,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.teal[300],
       ),
       drawer: Drawer(
         child: ListView(
