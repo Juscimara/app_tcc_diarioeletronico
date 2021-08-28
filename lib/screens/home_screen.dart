@@ -1,21 +1,40 @@
-import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/providers/bloodglucose_model.dart';
+import 'package:app_tcc_diarioeletronico/repositorys/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
+import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final firestoreservice = FirestoreService();
+
+  void init () async{
+     BloodglucoseRepository.listBloodglucose = await firestoreservice.getBloodglucose().first;    
+  }
+
+  void initState() {
+      init();
+      super.initState();
+   }
+
   @override
   Widget build(BuildContext context) {
-    final glicemia_list = Provider.of<List<Bloodglucose>>(context);
+    //final glicemia_list = Provider.of<List<Bloodglucose>>(context);
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
         title: Text("Home"),
       ),
-      body: (glicemia_list != null)
+      body: (BloodglucoseRepository.listBloodglucose != null)
           ? ListView.builder(
-              itemCount: glicemia_list.length,
+              itemCount: BloodglucoseRepository.listBloodglucose.length,
               itemBuilder: (BuildContext context, int i) {
                 return Container(
                   decoration: BoxDecoration(
@@ -26,14 +45,14 @@ class HomeScreen extends StatelessWidget {
                   child: ListTile(
                     isThreeLine: true,
                     title: Text(
-                      glicemia_list[i].nome,
+                      BloodglucoseRepository.listBloodglucose[i].nome ?? "teste",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
                     subtitle: Text(
-                      glicemia_list[i].glicemia,
+                      BloodglucoseRepository.listBloodglucose[i].glicemia ?? "teste",
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 18,
@@ -43,12 +62,13 @@ class HomeScreen extends StatelessWidget {
                         icon: Icon(Icons.edit),
                         color: Colors.yellow[900],
                         iconSize: 28,
-                        onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BloodGlucoseScreen(
-                                    glicemia: glicemia_list[i]),
-                              ),
-                            )),
+                        onPressed: () => {}
+                        // Navigator.of(context).push(
+                        //       MaterialPageRoute(
+                        //         builder: (context) => BloodGlucoseScreen(
+                        //             glicemia: glicemia_list[i]),
+                        //       ),
+                            )
                   ),
                 );
               },
@@ -65,37 +85,7 @@ class HomeScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.green,
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            //UserAccountsDrawerHeader(
-            Image.asset(
-              'images/blood.png',
-              width: 150,
-              height: 150,
-              fit: BoxFit.contain,
-            ),
-            ListTile(
-                leading: Icon(Icons.person_pin),
-                title: Text("Glicemia"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BloodGlucoseScreen()),
-                  );
-                }),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Sair"),
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: Menu(),
     );
   }
 }

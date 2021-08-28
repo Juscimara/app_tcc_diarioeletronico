@@ -18,13 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firestoreservice = FirestoreService();
-    return
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => Bloodglucose()),
-        StreamProvider(create: (context) => firestoreservice.getBloodglucose()),
-      ], 
-      child:
+    return    
      MaterialApp(
       title: 'Diário Eletrônico',
       theme: ThemeData(
@@ -37,7 +31,6 @@ class MyApp extends StatelessWidget {
         "/register": (context) => RegisterScreen(),
         "/home": (context) => HomeScreen()
       },
-     ),
-    );
+     );
   }
 }
