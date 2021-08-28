@@ -25,26 +25,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    final glicemiaList = Provider.of<List<MeasuredBloodglucose>>(context);
-=======
     //final glicemia_list = Provider.of<List<Bloodglucose>>(context);
     
->>>>>>> juscimara
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
         title: Text("Glicemia"),
       ),
-<<<<<<< HEAD
-      body: (glicemiaList != null)
-          ? ListView.builder(
-              itemCount: glicemiaList.length,
-=======
       body: (BloodglucoseRepository.listBloodglucose != null)
           ? ListView.builder(
               itemCount: BloodglucoseRepository.listBloodglucose.length,
->>>>>>> juscimara
               itemBuilder: (BuildContext context, int i) {
                 return Container(
                   decoration: BoxDecoration(
@@ -55,41 +45,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListTile(
                     isThreeLine: true,
                     title: Text(
-<<<<<<< HEAD
-                      glicemiaList[i].horario,
-=======
                       BloodglucoseRepository.listBloodglucose[i].nome ?? "teste",
->>>>>>> juscimara
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
                     subtitle: Text(
-<<<<<<< HEAD
-                      glicemiaList[i].glicemia,
-=======
                       BloodglucoseRepository.listBloodglucose[i].glicemia ?? "teste",
->>>>>>> juscimara
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 18,
                       ),
                     ),
-<<<<<<< HEAD
-=======
                     trailing: IconButton(
                         icon: Icon(Icons.edit),
                         color: Colors.yellow[900],
                         iconSize: 28,
                         onPressed: () => {}
                         // Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //         builder: (context) => BloodGlucoseScreen(
+           //         builder: (context) => BloodGlucoseScreen(
                         //             glicemia: glicemia_list[i]),
                         //       ),
                             )
->>>>>>> juscimara
                   ),
                 );
               },
