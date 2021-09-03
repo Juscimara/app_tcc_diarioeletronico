@@ -7,14 +7,16 @@ import 'package:provider/provider.dart';
 class BloodGlucoseScreen extends StatefulWidget {
   Bloodglucose glicemia;
   BloodGlucoseScreen({this.glicemia, Key key}) : super(key: key);
+
   @override
   _BloodGlucoseState createState() => _BloodGlucoseState();
 }
 
 class _BloodGlucoseState extends State<BloodGlucoseScreen> {
+  TextEditingController _bloodglucoseController = TextEditingController();
+
   @override
   void initState() {
-    // final bloodglucoseProvider = Provider.of<bloodglucose>(context, listen: false);
     super.initState();
   }
 
@@ -63,7 +65,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                     child: Column(
                   children: [
                     Input(
-                      // controller: _bloodglucoseController,
+                      controller: _bloodglucoseController,
                       text: 'Glicemia Aferida',
                       keyboardType: TextInputType.text,
                       validator: (value) {
@@ -75,33 +77,6 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                     ),
                   ],
                 )),
-                Button(
-                  width: MediaQuery.of(context).size.width,
-                  heigth: 50,
-                  widget: Center(
-                    child: !isLoading
-                        ? Text(
-                            'Cancelar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          )
-                        : SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.white,
-                              ),
-                            ),
-                          ),
-                  ),
-                  /* onPress: () {
-                          signIn();
-                        }, */
-                ),
                 Button(
                   width: MediaQuery.of(context).size.width,
                   heigth: 50,

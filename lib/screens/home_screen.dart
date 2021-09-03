@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
-        title: Text("Home"),
+        title: Text("Glicemia"),
       ),
       body: (BloodglucoseRepository.listBloodglucose != null)
           ? ListView.builder(
@@ -64,8 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         iconSize: 28,
                         onPressed: () => {}
                         // Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //         builder: (context) => BloodGlucoseScreen(
+           //         builder: (context) => BloodGlucoseScreen(
                         //             glicemia: glicemia_list[i]),
                         //       ),
                             )
@@ -83,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.teal[300],
       ),
       drawer: Menu(),
     );
