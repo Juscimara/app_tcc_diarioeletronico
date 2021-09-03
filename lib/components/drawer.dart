@@ -18,7 +18,7 @@ class Menu extends StatelessWidget {
               fit: BoxFit.contain,
             ),
             ListTile(
-                leading: Icon(Icons.person_pin),
+                leading: Icon(Icons.bloodtype_outlined),
                 title: Text("Glicemia"),
                 onTap: () {
                   Navigator.push(
@@ -28,7 +28,7 @@ class Menu extends StatelessWidget {
                   );
                 }),
                 ListTile(
-                leading: Icon(Icons.person_pin),
+                leading: Icon(Icons.food_bank_outlined),
                 title: Text("Refeição"),
                 onTap: () {
                   Navigator.push(
@@ -38,7 +38,7 @@ class Menu extends StatelessWidget {
                   );
                 }),
             ListTile(
-              leading: Icon(Icons.logout),
+              leading: Icon(Icons.exit_to_app_rounded),
               title: Text("Sair"),
               onTap: () {
                 Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);

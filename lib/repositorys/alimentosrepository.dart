@@ -5,7 +5,6 @@ class AlimentoRepository {
 
   static initList() {
     listAlimento = JsonAlimentos.map((e) {
-      print(e);
       return AlimentoModel.fromFirestore(e);
     }).toList();
   }
