@@ -6,6 +6,7 @@ import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
+import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +25,7 @@ class _RefeicaoState extends State<MealsScreen> {
   bool show = false;
   TextEditingController dropdownValue = TextEditingController();
   TextEditingController qtdController = TextEditingController(text: '1');
-  TextEditingValue textEditingValue = new TextEditingValue();
+  TextEditingController textEditingValue = new TextEditingController();
 
   static final DateTime now = DateTime.now();
   static final DateFormat formatter = DateFormat('dd/MM/yyyy');
@@ -59,7 +60,7 @@ class _RefeicaoState extends State<MealsScreen> {
               text: "Selecione o Horário",
               controller: dropdownValue,
             ),
-            Text("\n Selecione o Alimento"),
+            Text("\n"),
             Autocomplete<String>(
               optionsBuilder: (textEditingValue) {
                 if (textEditingValue.text == '') {
@@ -75,6 +76,31 @@ class _RefeicaoState extends State<MealsScreen> {
                   show = true;
                   foodSelected = selection;
                 });
+              },
+              fieldViewBuilder:
+                  (context, controller, focusNode, onEditingComplete) {
+                this.textEditingValue = controller;
+                return TextField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  onEditingComplete: onEditingComplete,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(color: Colors.yellow[700]),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(color: Colors.yellow[700]),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(color: Colors.yellow[700]),
+                    ),
+                    hintText: "Selecione o Alimento",
+                    prefixIcon: Icon(Icons.search, color: Color(0xFF26A69A)),
+                  ),
+                );
               },
             ),
             Text("\n"),
@@ -213,8 +239,11 @@ class _RefeicaoState extends State<MealsScreen> {
                                 horario: dropdownValue.text,
                                 dataAtual: dataFormatter);
                             FirestoreService().saveMeals(r);
-                            //textEditingValue = ' ';
-                            //qtdController.text = '1';
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                            );
                           }),
                     ]),
                   )

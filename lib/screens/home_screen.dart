@@ -1,6 +1,8 @@
+import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
@@ -56,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 18,
                       ),
                     ),
+
                     trailing: IconButton(
                         icon: Icon(Icons.edit),
                         color: Colors.yellow[900],
@@ -65,12 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
            //         builder: (context) => BloodGlucoseScreen(
                         //             glicemia: glicemia_list[i]),
                         //       ),
-                            )
+                            ),
                   ),
                 );
               },
-            )
-          : Center(child: Text('Nenhum acompanhamento encontrado!')),
+            ): Center(child: Text('Nenhum acompanhamento encontrado!'),
+            ),
       floatingActionButton: FloatingActionButton(
         child: IconButton(
           icon: Icon(Icons.add),
