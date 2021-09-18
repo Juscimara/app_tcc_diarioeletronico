@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
-        title: Text("Glicemia"),
+        title: Text("Home"),
       ),
       body: (BloodglucoseRepository.listBloodglucose != null)
           ? ListView.builder(
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             )
-          : Center(child: Text('Nenhum acompanhamento econtrado!')),
+          : Center(child: Text('Nenhum acompanhamento encontrado!')),
       floatingActionButton: FloatingActionButton(
         child: IconButton(
           icon: Icon(Icons.add),

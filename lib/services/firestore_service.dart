@@ -1,6 +1,6 @@
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
-import 'package:app_tcc_diarioeletronico/providers/bloodglucose_model.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -34,4 +34,12 @@ class FirestoreService {
     return _db.collection('morador').doc(bloodglucoseId).delete();
   } */
 
+  //Salvar Refeição
+  Future<void> saveMeals(MealsModel refeicao) {
+    String id = AuthService.getCurrentUser().uid;
+    var ref = _db.collection('usuarios').doc(id).collection('refeicao').doc();
+     ref.set(refeicao.toMap());
+     refeicao.alimentos.map((e) => e.toMap());     
+    return null;
+  }
 }

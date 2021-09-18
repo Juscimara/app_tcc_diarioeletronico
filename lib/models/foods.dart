@@ -1,4 +1,4 @@
-class AlimentoModel {
+class FoodModel {
   String id;
   String Alimento;
   double CHO;
@@ -6,7 +6,7 @@ class AlimentoModel {
   String MedidaUsual;
   double gOuMl;
 
-  AlimentoModel(
+  FoodModel(
       {this.id,
       this.Alimento,
       this.CHO,
@@ -14,7 +14,7 @@ class AlimentoModel {
       this.MedidaUsual,
       this.gOuMl});
 
-  AlimentoModel.fromFirestore(Map<String, dynamic> firestoredocument)
+  FoodModel.fromFirestore(Map<String, dynamic> firestoredocument)
       : id = firestoredocument['id'],
         Alimento = firestoredocument['Alimento'],
         MedidaUsual = firestoredocument['Medida usual'],
