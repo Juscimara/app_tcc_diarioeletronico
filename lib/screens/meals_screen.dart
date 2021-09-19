@@ -41,7 +41,7 @@ class _RefeicaoState extends State<MealsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
-        title: Text("Refeição"),
+        title: Text("Adicionar Refeição"),
       ),
       body: SingleChildScrollView(
         child: Container(

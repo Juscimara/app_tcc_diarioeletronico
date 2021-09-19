@@ -1,9 +1,9 @@
 import 'package:app_tcc_diarioeletronico/screens/about_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/recoverPassword_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/terms_screen.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -62,13 +62,25 @@ class Menu extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Icons.password_outlined,
+              Icons.vpn_key_outlined,
             ),
             title: Text("Redefinir senha"),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => RecoverPasswordScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.warning_amber_outlined,
+            ),
+            title: Text("Alertas"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlertsScreen()),
               );
             },
           ),
