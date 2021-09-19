@@ -239,11 +239,7 @@ class _RefeicaoState extends State<MealsScreen> {
                                 horario: dropdownValue.text,
                                 dataAtual: dataFormatter);
                             FirestoreService().saveMeals(r);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                            );
+                            showAlertDialog(context);
                           }),
                     ]),
                   )
@@ -254,4 +250,30 @@ class _RefeicaoState extends State<MealsScreen> {
       drawer: Menu(),
     );
   }
+}
+
+void showAlertDialog(BuildContext context) {
+  // ignore: deprecated_member_use
+  Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ));
+      });
+  AlertDialog alerta = AlertDialog(
+    content: Text("Refeição salva com sucesso!"),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
 }

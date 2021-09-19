@@ -3,6 +3,7 @@ import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
   FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -11,6 +12,22 @@ class FirestoreService {
     return _db.collection('usuarios').doc(user.id).set(
           user.toMap(),
         );
+  }
+
+  Future<void> alterUserData(UserData user) {    
+    String id = AuthService.getCurrentUser().uid;
+    _changePassword(user.password);
+    return _db.collection('usuarios').doc(id).update({'password': user.password});
+  }
+
+  void _changePassword(String password) async{
+    User user = await  FirebaseAuth.instance.currentUser;
+    
+    user.updatePassword(password).then((_){
+      print("Senha alterada com sucesso!");
+    }).catchError((error){
+      print("Erro na alteração de senha!" + error.toString());
+    });
   }
 
   Future<void> removeUser(UserData user) {
@@ -31,7 +48,7 @@ class FirestoreService {
   }
   /* 
   Future<void> removeBloodglucose(String bloodglucoseId) {
-    return _db.collection('morador').doc(bloodglucoseId).delete();
+    return _db.collection('glicemia').doc(bloodglucoseId).delete();
   } */
 
   //Salvar Refeição

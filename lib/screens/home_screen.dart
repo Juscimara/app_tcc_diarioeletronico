@@ -1,8 +1,6 @@
-import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 

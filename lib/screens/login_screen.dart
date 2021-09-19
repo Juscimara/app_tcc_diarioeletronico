@@ -1,6 +1,7 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/recoverPassword_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/register_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,10 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         if (user != null)
           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                            );
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
         else
           alert("msg");
       } else {
@@ -162,9 +162,52 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   )),
+              // Container(
+              //     width: MediaQuery.of(context).size.width,
+              //     margin: EdgeInsets.only(top: 30),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text(
+              //           'Esqueceu sua senha? ',
+              //           style: TextStyle(
+              //             color: Colors.black,
+              //             fontSize: 20,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //         SizedBox(
+              //           height: 20,
+              //           child: TextButton(
+              //             style: TextButton.styleFrom(
+              //               minimumSize: Size.zero,
+              //               padding: EdgeInsets.zero,
+              //             ),
+              //             onPressed: () {
+              //               Navigator.push(
+              //                 context,
+              //                 MaterialPageRoute(
+              //                   builder: (context) => RecoverPasswordScreen(),
+              //                 ),
+              //               );
+              //             },
+              //             child: Text(
+              //               'Redefinir Senha',
+              //               style: TextStyle(
+              //                 fontStyle: FontStyle.italic,
+              //                 fontSize: 18,
+              //                 color: Colors.teal[500],
+              //                 decoration: TextDecoration.underline,
+              //                 fontWeight: FontWeight.w700,
+              //               ),
+              //             ),
+              //           ),
+              //         )
+              //       ],
+              //     )),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: 20),
+                margin: EdgeInsets.only(top: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -185,10 +228,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterScreen()),
-                            );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()),
+                          );
                         },
                         child: Text(
                           'Cadastre-se',
