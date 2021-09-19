@@ -1,7 +1,7 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
-import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/login_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
@@ -103,11 +103,12 @@ void showAlertDialog(BuildContext context) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => LoginScreen(),
             ));
       });
   AlertDialog alerta = AlertDialog(
-    content: Text("Senha alterada com sucesso!"),
+    title: Text("Senha alterada com sucesso!"),
+    content: Text("Logue novamente para validar a alteração."),
     actions: [
       okButton,
     ],
