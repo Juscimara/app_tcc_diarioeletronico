@@ -1,5 +1,5 @@
 class UserData {
-  String id, name, phone, email, password, district, street, num, city, uf, cpf;
+  String id, name, phone, email, password, district, street, num, city, uf, cpf, weight, height, age;
 
   UserData({
     this.id,
@@ -12,7 +12,10 @@ class UserData {
     this.num,
     this.city,
     this.uf,
-    this.cpf
+    this.cpf,
+    this.weight,
+    this.height,
+    this.age
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +31,9 @@ class UserData {
       'city': city,
       'uf': uf,
       'cpf': cpf,
+      'weight':weight,
+      'height':height,
+      'age':age
     };
   }
 
@@ -41,5 +47,8 @@ class UserData {
         street = firestoreDocument['street'],
         num = firestoreDocument['num'],
         city = firestoreDocument['city'],
-        uf = firestoreDocument['uf'];
+        uf = firestoreDocument['uf'],
+        weight = firestoreDocument['weight'],
+        height = firestoreDocument['height'],
+        age = firestoreDocument['age'];
 }

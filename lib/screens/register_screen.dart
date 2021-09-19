@@ -1,6 +1,7 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
+import 'package:app_tcc_diarioeletronico/screens/terms_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +23,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _numController = TextEditingController();
   TextEditingController _districtController = TextEditingController();
   TextEditingController _cpfController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _ufController = TextEditingController();
+  TextEditingController _weightController = TextEditingController();
+  TextEditingController _heightController = TextEditingController();
+  TextEditingController _ageController = TextEditingController();
 
   @override
   bool _loading = false;
@@ -41,19 +47,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (authUser != null) {
         UserData user;
         user = UserData(
-              id: authUser.uid,
-              name: _nameController.text,
-              email: _emailController.text,
-              phone: _phoneController.text,
-              password: _passwordController.text,
-              street: _streetController.text,
-              num: _numController.text,
-              district: _districtController.text,
-              cpf: _cpfController.text,
-        );
+            id: authUser.uid,
+            name: _nameController.text,
+            email: _emailController.text,
+            phone: _phoneController.text,
+            password: _passwordController.text,
+            street: _streetController.text,
+            num: _numController.text,
+            district: _districtController.text,
+            cpf: _cpfController.text,
+            city: _cityController.text,
+            uf: _ufController.text,
+            weight: _weightController.text,
+            height: _heightController.text,
+            age: _ageController.text);
         await FirestoreService().saveUser(user);
 
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+        Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TermsScreen()),
+                            );
       }
     }
 
@@ -187,21 +201,101 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7 - 24,
+                      child: Input(
+                        text: 'Cidade',
+                        controller: _cityController,
+                        keyboardType: TextInputType.streetAddress,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Cidade obrigatória';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3 - 24,
+                      child: Input(
+                        text: 'UF',
+                        controller: _ufController,
+                        keyboardType: TextInputType.streetAddress,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Informe';
+                          }
+                          return null;
+                        },
+                      ),
+                    )
+                  ],
+                ),
                 Column(
-                        children: [
-                          Input(
-                            text: 'CPF',
-                            controller: _cpfController,
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'CPF obrigatório';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),                      
+                  children: [
+                    Input(
+                      text: 'CPF',
+                      controller: _cpfController,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'CPF obrigatório';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4 - 24,
+                      child: Input(
+                        text: 'Peso',
+                        controller: _weightController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Peso obrigatório';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3 - 24,
+                      child: Input(
+                          text: 'Altura',
+                          keyboardType: TextInputType.number,
+                          controller: _heightController,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Altura obrigatória';
+                            }
+                            return null;
+                          }),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3 - 24,
+                      child: Input(
+                          text: 'Idade',
+                          keyboardType: TextInputType.number,
+                          controller: _ageController,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Idade obrigatória';
+                            }
+                            return null;
+                          }),
+                    )
+                  ],
+                ),
                 _loading
                     ? CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(

@@ -1,4 +1,4 @@
-import 'package:app_tcc_diarioeletronico/components/drawer.dart';
+import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -61,10 +61,6 @@ class _TermsScreenState extends State<TermsScreen> {
                         setState(() {
                           isChecked = value;
                         });
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
                       },
                     ),
                   ]),
@@ -73,19 +69,40 @@ class _TermsScreenState extends State<TermsScreen> {
                       Text(
                         'Autorizar envio de dados',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(width: 30),
+                 SizedBox(width: 30),
+                  Column(children: [
+                     isChecked ? Button(
+                      width: 130,
+                      heigth: 40,
+                      widget: Center(
+                        child: Text(
+                          'Continuar',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      },
+                    )
+                  : Container(),
+                  ]),
                 ],
               ),
             ],
           ),
         ),
       ),
-      drawer: Menu(),
     );
   }
 }

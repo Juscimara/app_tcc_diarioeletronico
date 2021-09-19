@@ -1,5 +1,7 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/input.dart';
+import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/register_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
           senha: _passwordController.text,
         );
         if (user != null)
-          Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                            );
         else
           alert("msg");
       } else {
@@ -178,7 +184,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: EdgeInsets.zero,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterScreen()),
+                            );
                         },
                         child: Text(
                           'Cadastre-se',

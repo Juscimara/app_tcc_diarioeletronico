@@ -66,18 +66,6 @@ class Menu extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
             },
           ),
-          ListTile(
-            leading: Icon(
-              Icons.info,
-            ),
-            title: Text("Termos de Uso"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TermsScreen()),
-              );
-            },
-          ),
         ],
       ),
     );
