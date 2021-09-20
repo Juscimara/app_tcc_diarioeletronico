@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class Dropdown extends StatelessWidget {
   final String text, error;
   final TextEditingController controller;
-  final List<String> options;
+  final List<String> options;  
+  final Function validator;
 
-  Dropdown({Key key, this.text, this.error, this.options, this.controller})
+  Dropdown({Key key, this.text, this.error, this.options, this.controller,this.validator})
       : super(key: key);
 
   @override
@@ -46,7 +47,8 @@ class Dropdown extends StatelessWidget {
           labelStyle: TextStyle(
             color: Colors.black,
           ),
-        ),
+        ),        
+          validator: (value) => validator(value),
       ),
     );
   }

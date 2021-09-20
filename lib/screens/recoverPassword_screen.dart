@@ -70,7 +70,7 @@ class _RecoverPasswordState extends State<RecoverPasswordScreen> {
                   heigth: 50,
                   widget: Center(
                       child: Text(
-                    'Alterar Senha',
+                    'Salvar',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

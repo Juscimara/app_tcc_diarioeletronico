@@ -54,6 +54,12 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
               ],
               text: "Selecione o Horário",
               controller: dropdownValue,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Informe';
+                }
+                return null;
+              },
             ),
             Form(
                 child: Column(
@@ -64,7 +70,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                   keyboardType: TextInputType.text,
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Glicemia obrigatória';
+                      return 'Informe';
                     }
                     return null;
                   },

@@ -47,6 +47,13 @@ class _RefeicaoState extends State<MealsScreen> {
         child: Container(
           padding: EdgeInsets.all(20),
           child: Column(children: [
+            Text(
+              "Data: " + dataFormatter + "\n",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Dropdown(
               options: [
                 'Selecione',
@@ -59,6 +66,12 @@ class _RefeicaoState extends State<MealsScreen> {
               ],
               text: "Selecione o Horário",
               controller: dropdownValue,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Informe';
+                }
+                return null;
+              },
             ),
             Text("\n"),
             Autocomplete<String>(
@@ -111,6 +124,12 @@ class _RefeicaoState extends State<MealsScreen> {
                         controller: qtdController,
                         text:
                             "Digite a quantidade ingerida em ${alimento.MedidaUsual}",
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Informe';
+                          }
+                          return null;
+                        },
                       ),
                       Button(
                           width: MediaQuery.of(context).size.width,
@@ -140,7 +159,6 @@ class _RefeicaoState extends State<MealsScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text("Data: " + dataFormatter),
                             Text(
                               "\n LISTA DE ALIMENTOS SELECIONADOS: \n",
                               style: TextStyle(
@@ -226,7 +244,7 @@ class _RefeicaoState extends State<MealsScreen> {
                           width: MediaQuery.of(context).size.width,
                           heigth: 50,
                           widget: Text(
-                            'Salvar Refeição',
+                            'Salvar',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
