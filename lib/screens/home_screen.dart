@@ -1,5 +1,5 @@
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
-import 'package:app_tcc_diarioeletronico/repositorys/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/repositorys/bloodglucose_repository.dart';
 import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final firestoreservice = FirestoreService();
 
   void init () async{
-     BloodglucoseRepository.listBloodglucose = await firestoreservice.getBloodglucose().first;    
+     //BloodglucoseRepository.listBloodglucose = await firestoreservice.getBloodglucose().first;    
   }
 
   void initState() {
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListTile(
                     isThreeLine: true,
                     title: Text(
-                      BloodglucoseRepository.listBloodglucose[i].nome ?? "teste",
+                      BloodglucoseRepository.listBloodglucose[i].glicemia,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icon(Icons.add),
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => BloodGlucoseScreen(glicemia: null),
+              builder: (context) => BloodGlucoseScreen(),
             ),
           ),
         ),

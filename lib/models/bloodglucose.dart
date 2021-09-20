@@ -1,29 +1,15 @@
-class MeasuredBloodglucose {
-  String id;
-  String nome;
+class MeasuredBloodglucoseModel {
   String glicemia;
   String horario;
+  String dataAtual;
 
-  MeasuredBloodglucose(
-
-      {this.id,
-       this.nome,
-       this.glicemia, 
-       this.horario
-      });
+  MeasuredBloodglucoseModel({this.glicemia, this.horario, this.dataAtual});
 
   Map<String, dynamic> toMap() {
-    return {
-      "id": id,
-      "nome": nome,
-      "glicemia" : glicemia,
-      "horario" : horario
+    return{
+      'glicemia': glicemia,
+      'horario': horario,
+      'data': dataAtual
     };
   }
-
-  MeasuredBloodglucose.fromFirestore(Map<String, dynamic> firestoredocument)
-      : id = firestoredocument['id'],
-        nome = firestoredocument['nome'],
-        glicemia = firestoredocument['glicemia'],
-        horario = firestoredocument['horario'];
 }

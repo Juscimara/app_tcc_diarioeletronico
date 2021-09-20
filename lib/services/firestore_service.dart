@@ -14,18 +14,21 @@ class FirestoreService {
         );
   }
 
-  Future<void> alterUserData(UserData user) {    
+  Future<void> alterUserData(UserData user) {
     String id = AuthService.getCurrentUser().uid;
     _changePassword(user.password);
-    return _db.collection('usuarios').doc(id).update({'password': user.password});
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .update({'password': user.password});
   }
 
-  void _changePassword(String password) async{
-    User user = await  FirebaseAuth.instance.currentUser;
-    
-    user.updatePassword(password).then((_){
+  void _changePassword(String password) async {
+    User user = await FirebaseAuth.instance.currentUser;
+
+    user.updatePassword(password).then((_) {
       print("Senha alterada com sucesso!");
-    }).catchError((error){
+    }).catchError((error) {
       print("Erro na alteração de senha!" + error.toString());
     });
   }
@@ -34,18 +37,30 @@ class FirestoreService {
     return _db.collection('usuarios').doc(user.id).delete();
   }
 
-   //SALVAR 
-  Future<void> saveBloodglucose(MeasuredBloodglucose bloodglucose) {
-    String id = AuthService.getCurrentUser().uid;
-    return _db.collection('usuarios').doc(id).collection('glicemia').doc().set(bloodglucose.toMap());
+  Future<void> getUserData(UserData user) {
+    return _db.collection('usuarios').doc(user.id).get();
   }
 
-  Stream<List<MeasuredBloodglucose>> getBloodglucose() {
+  //SALVAR
+  Future<void> saveBloodglucose(MeasuredBloodglucoseModel bloodglucose) {
     String id = AuthService.getCurrentUser().uid;
-    return _db.collection('usuarios').doc(id).collection('glicemia').snapshots().map((snapshot) => snapshot.docs
-        .map((document) => MeasuredBloodglucose.fromFirestore(document.data()))
-        .toList());
+    return _db.collection('usuarios').doc(id).collection('glicemia')
+    .doc().set(bloodglucose.toMap());
   }
+
+  // Stream<List<MeasuredBloodglucoseModel>> getBloodglucose() {
+  //   String id = AuthService.getCurrentUser().uid;
+  //   return _db
+  //       .collection('usuarios')
+  //       .doc(id)
+  //       .collection('glicemia')
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.docs
+  //           .map((document) =>
+  //               MeasuredBloodglucoseModel.fromFirestore(document.data()))
+  //           .toList());
+  // }
+
   /* 
   Future<void> removeBloodglucose(String bloodglucoseId) {
     return _db.collection('glicemia').doc(bloodglucoseId).delete();
@@ -55,8 +70,8 @@ class FirestoreService {
   Future<void> saveMeals(MealsModel refeicao) {
     String id = AuthService.getCurrentUser().uid;
     var ref = _db.collection('usuarios').doc(id).collection('refeicao').doc();
-     ref.set(refeicao.toMap());
-     refeicao.alimentos.map((e) => e.toMap());     
+    ref.set(refeicao.toMap());
+    refeicao.alimentos.map((e) => e.toMap());
     return null;
   }
 }
