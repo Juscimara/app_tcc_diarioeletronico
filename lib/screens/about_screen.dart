@@ -1,4 +1,5 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
+import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -65,6 +66,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ]),
       ),
+      drawer: Menu(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
+import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
 import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
@@ -94,6 +95,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
           ],
         ),
       ),
+      drawer: Menu(),
     );
   }
 }
