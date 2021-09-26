@@ -19,6 +19,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
   @override
   TextEditingController bloodglucoseController = TextEditingController();
   TextEditingController dropdownValue = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   static final DateTime now = DateTime.now();
   static final DateFormat formatter = DateFormat('dd/MM/yyyy');
@@ -33,72 +34,77 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Text(
-              "Data: " + dataFormatter + "\n",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Dropdown(
-              options: [
-                'Selecione',
-                'Café da Manhã',
-                'Depois do Café da Manhã',
-                'Almoço',
-                'Café da Tarde',
-                'Jantar',
-                'Depois do Jantar'
-              ],
-              text: "Selecione o Horário",
-              controller: dropdownValue,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Informe';
-                }
-                return null;
-              },
-            ),
-            Form(
-                child: Column(
-              children: [
-                Input(
-                  controller: bloodglucoseController,
-                  text: 'Glicemia Aferida',
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Informe';
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            )),
-            Button(
-              width: MediaQuery.of(context).size.width,
-              heigth: 50,
-              widget: Center(
-                  child: Text(
-                'Salvar',
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Text(
+                "Data: " + dataFormatter + "\n",
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-              )),
-              onPress: () {
-                MeasuredBloodglucoseModel mb = new MeasuredBloodglucoseModel(
-                    glicemia: bloodglucoseController.text,
-                    horario: dropdownValue.text,
-                    dataAtual: dataFormatter);
-                FirestoreService().saveBloodglucose(mb);
-                showAlertDialog(context);
-              },
-            ),
-          ],
+              ),
+              Dropdown(
+                options: [
+                  'Selecione',
+                  'Café da Manhã',
+                  'Depois do Café da Manhã',
+                  'Almoço',
+                  'Café da Tarde',
+                  'Jantar',
+                  'Depois do Jantar'
+                ],
+                text: "Selecione o Horário",
+                controller: dropdownValue,
+                validator: (value) {
+                  if (value == 'Selecione') {
+                    return 'Informe';
+                  }
+                  return null;
+                },
+              ),
+              Column(
+                children: [
+                  Input(
+                    controller: bloodglucoseController,
+                    text: 'Glicemia Aferida (mg/dL)',
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Informe';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+              Button(
+                width: MediaQuery.of(context).size.width,
+                heigth: 50,
+                widget: Center(
+                    child: Text(
+                  'Salvar',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                )),
+                onPress: () {
+                  if (_formKey.currentState.validate()) {
+                    MeasuredBloodglucoseModel mb =
+                        new MeasuredBloodglucoseModel(
+                            glicemia: bloodglucoseController.text,
+                            horario: dropdownValue.text,
+                            dataAtual: dataFormatter);
+                    FirestoreService().saveBloodglucose(mb);
+                    showAlertDialog(context);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
       drawer: Menu(),
