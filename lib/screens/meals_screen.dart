@@ -241,7 +241,7 @@ class _RefeicaoState extends State<MealsScreen> {
                             width: MediaQuery.of(context).size.width,
                             heigth: 50,
                             widget: Text(
-                              'Salvar Refeição',
+                              'Salvar',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

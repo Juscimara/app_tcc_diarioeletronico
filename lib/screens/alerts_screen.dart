@@ -1,6 +1,5 @@
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
-import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
 class AlertsScreen extends StatefulWidget {
