@@ -1,6 +1,7 @@
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
-import 'package:app_tcc_diarioeletronico/models/users.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class AlertsScreen extends StatefulWidget {
   const AlertsScreen({Key key}) : super(key: key);
@@ -10,11 +11,29 @@ class AlertsScreen extends StatefulWidget {
 }
 
 class _AlertsState extends State<AlertsScreen> {
-  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  UserData userData = new UserData();
-  
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    OneSignal.shared.setAppId("eee0638c-4480-41b6-bd65-c995830fd96c");
+
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+        (OSNotificationReceivedEvent event) {
+      // Será chamado sempre que uma notificação for recebida em primeiro plano
+      // Notificação de exibição, passe parametros nulos por não exibir a notificação
+      event.complete(event.notification);
+    });
+
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      // Será chamado sempre que uma notificação for aberta/botão pressionado.
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +44,14 @@ class _AlertsState extends State<AlertsScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(20.0),
           child: Form(
-            key: _formkey,
+            key: _formKey,
             child: Column(
-              children: [Padding(
-                  padding: const EdgeInsets.only(bottom: 24.0),
-                  child: Image.asset(
-                    'images/warn.png',
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
+              children: [],
             ),
           ),
-        ),
+        ), 
       ),
       drawer: Menu(),
     );
