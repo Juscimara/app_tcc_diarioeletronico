@@ -1,7 +1,8 @@
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'dart:ui';
 
 class AlertsScreen extends StatefulWidget {
   const AlertsScreen({Key key}) : super(key: key);
@@ -12,27 +13,28 @@ class AlertsScreen extends StatefulWidget {
 
 class _AlertsState extends State<AlertsScreen> {
   final _formKey = GlobalKey<FormState>();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    var android = new AndroidInitializationSettings("@mipmap/ic_launcher");
+    var iOS = new IOSInitializationSettings();
+    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(initSetttings,
+        onSelectNotification: onSelectNotification);
   }
 
-  Future<void> initPlatformState() async {
-    OneSignal.shared.setAppId("eee0638c-4480-41b6-bd65-c995830fd96c");
-
-    OneSignal.shared.setNotificationWillShowInForegroundHandler(
-        (OSNotificationReceivedEvent event) {
-      // Será chamado sempre que uma notificação for recebida em primeiro plano
-      // Notificação de exibição, passe parametros nulos por não exibir a notificação
-      event.complete(event.notification);
-    });
-
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      // Será chamado sempre que uma notificação for aberta/botão pressionado.
-    });
+  Future onSelectNotification(String payload) {
+    debugPrint("payload : $payload");
+    showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text('Notification'),
+        content: new Text('$payload'),
+      ),
+    );
   }
 
   @override
@@ -48,12 +50,35 @@ class _AlertsState extends State<AlertsScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              children: [],
+              children: [
+                IconButton(
+                  onPressed: showNotification, 
+                  icon: Icon(Icons.notifications),
+                ),
+                 IconButton(
+                  onPressed: cancelNotification, 
+                  icon: Icon(Icons.delete),
+                ),
+              ],
             ),
           ),
-        ), 
+        ),
       ),
       drawer: Menu(),
     );
+  }
+
+  showNotification() async {
+    var android = new AndroidNotificationDetails(
+        'channel id', 'channel NAME', 'channel DESCRIPTION',
+        priority: Priority.high, importance: Importance.max);
+    var platform = new NotificationDetails(android: android);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'New Tutorial', 'Local Notification', platform,
+        payload: 'AndroidCoding.in');
+  }
+
+  Future<void> cancelNotification() async {
+    await flutterLocalNotificationsPlugin.cancel(0);
   }
 }

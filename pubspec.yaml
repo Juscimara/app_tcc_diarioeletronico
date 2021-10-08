@@ -30,7 +30,7 @@ dependencies:
   url_launcher: ^6.0.10
   splashscreen: ^1.2.0
   flutter_launcher_icons: ^0.8.1
-  onesignal_flutter: ^3.0.0
+  flutter_local_notifications: ^7.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

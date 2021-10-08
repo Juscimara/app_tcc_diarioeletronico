@@ -13,13 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Diário Eletrônico',
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-        unselectedWidgetColor: Color(0xFF31CF2B),
-      ),
-      home: MyHomePage()
-    );
+        title: 'Diário Eletrônico',
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+          unselectedWidgetColor: Color(0xFF31CF2B),
+        ),
+        home: MyHomePage());
   }
 }
 
