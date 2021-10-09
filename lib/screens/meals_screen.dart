@@ -10,6 +10,7 @@ import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
 import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
+import 'package:app_tcc_diarioeletronico/utils/calc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -57,6 +58,11 @@ class _RefeicaoState extends State<MealsScreen> {
   static final DateTime now = DateTime.now();
   static final DateFormat formatter = DateFormat('dd/MM/yyyy');
   final String dataFormatter = formatter.format(now);
+
+  // Future<double> verifyFoods() async
+  // {
+  //   await FirestoreService().getMeals();
+  // }
 
   @override
   final _formKey = GlobalKey<FormState>();
@@ -299,6 +305,8 @@ class _RefeicaoState extends State<MealsScreen> {
                                     horario: dropdownValue.text,
                                     dataAtual: dataFormatter);
                                 FirestoreService().saveMeals(r);
+                                
+                                //verifyFoods().then((value) => print(value));
 
                                 if (7 <= 70) {
                                   showNotificationNiveisNormais();

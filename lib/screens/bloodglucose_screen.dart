@@ -189,7 +189,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
     await flutterLocalNotificationsPlugin.show(
-        0, 'Alerta Refeição', 'Cuidado, calorias em níveis baixos! O que fazer? Clique para saber mais!', platform,
+        0, 'Alerta Glicemia', 'Cuidado, glicemia em níveis baixos! O que fazer? Clique para saber mais!', platform,
         payload: 'Cuidado, calorias em níveis baixos! \nO que fazer? \n\nA hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.');       
   }
 

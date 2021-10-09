@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/notification.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
+import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,11 +42,16 @@ class FirestoreService {
     return _db.collection('usuarios').doc(user.id).delete();
   }
 
-  Future<void> getUserData(UserData user) {
-    return _db.collection('usuarios').doc(user.id).get();
+  Future<UserData> getUserData() {
+    String id = AuthService.getCurrentUser().uid;
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .get()
+        .then((value) => UserData.fromFirestore(value.data()));
   }
 
-  //SALVAR
+  //Salvar Glicemia
   Future<void> saveBloodglucose(MeasuredBloodglucoseModel bloodglucose) {
     String id = AuthService.getCurrentUser().uid;
     return _db
@@ -53,24 +62,6 @@ class FirestoreService {
         .set(bloodglucose.toMap());
   }
 
-  // Stream<List<MeasuredBloodglucoseModel>> getBloodglucose() {
-  //   String id = AuthService.getCurrentUser().uid;
-  //   return _db
-  //       .collection('usuarios')
-  //       .doc(id)
-  //       .collection('glicemia')
-  //       .snapshots()
-  //       .map((snapshot) => snapshot.docs
-  //           .map((document) =>
-  //               MeasuredBloodglucoseModel.fromFirestore(document.data()))
-  //           .toList());
-  // }
-
-  /* 
-  Future<void> removeBloodglucose(String bloodglucoseId) {
-    return _db.collection('glicemia').doc(bloodglucoseId).delete();
-  } */
-
   //Salvar Refeição
   Future<void> saveMeals(MealsModel refeicao) {
     String id = AuthService.getCurrentUser().uid;
@@ -79,6 +70,22 @@ class FirestoreService {
     refeicao.alimentos.map((e) => e.toMap());
     return null;
   }
+
+  // Future<void> getMeals() async {
+  //   String id = AuthService.getCurrentUser().uid;
+
+  //   return await _db
+  //       .collection('usuarios')
+  //       .doc(id)
+  //       .collection('refeicao')
+  //       .get()
+  //       .then((snaps) {
+  //     snaps.docs
+  //         .map((doc) => FoodModel.fromFirestoreConvertObject(
+  //             {"id": doc.id, ...doc.data()}))
+  //         .toList();
+  //   });
+  // }
 
   //Salvar Notificação
   Future<void> saveNotification(NotificationModel notifications) {
