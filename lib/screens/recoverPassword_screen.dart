@@ -13,7 +13,7 @@ class RecoverPasswordScreen extends StatefulWidget {
 }
 
 class _RecoverPasswordState extends State<RecoverPasswordScreen> {
-  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
@@ -29,7 +29,7 @@ class _RecoverPasswordState extends State<RecoverPasswordScreen> {
           height: MediaQuery.of(context).size.height,
           padding: EdgeInsets.all(20),
           child: Form(
-            key: _formkey,
+            key: _formKey,
             child: Column(
               children: [
                 Padding(
@@ -78,12 +78,14 @@ class _RecoverPasswordState extends State<RecoverPasswordScreen> {
                     ),
                   )),
                   onPress: () {
-                    UserData user = new UserData(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    );
-                    FirestoreService().alterUserData(user);
-                    showAlertDialog(context);
+                    if (_formKey.currentState.validate()) {
+                      UserData user = new UserData(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                      FirestoreService().alterUserData(user);
+                      showAlertDialog(context);
+                    }
                   },
                 ),
               ],

@@ -5,6 +5,7 @@ import 'package:app_tcc_diarioeletronico/screens/history_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/recoverPassword_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/terms_screen.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -15,7 +16,6 @@ class Menu extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          //UserAccountsDrawerHeader(
           Image.asset(
             'images/blood.png',
             width: 150,
@@ -60,6 +60,18 @@ class Menu extends StatelessWidget {
               }),
           ListTile(
             leading: Icon(
+              Icons.warning_amber_outlined,
+            ),
+            title: Text("Alertas"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlertsScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
               Icons.info_outline,
             ),
             title: Text("Entenda a contagem"),
@@ -78,19 +90,8 @@ class Menu extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RecoverPasswordScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.warning_amber_outlined,
-            ),
-            title: Text("Alertas"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AlertsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => RecoverPasswordScreen()),
               );
             },
           ),

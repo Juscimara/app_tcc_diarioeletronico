@@ -15,4 +15,8 @@ class FoodViewModel {
       'CHO': quantidade * alimento.CHO
     };
   }
+
+  FoodViewModel.fromFirestore(Map<String, dynamic> firestoreDocument)
+      : alimento = firestoreDocument['alimento'],
+        quantidade = firestoreDocument['quantidade'];
 }

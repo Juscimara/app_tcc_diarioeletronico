@@ -249,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4 - 24,
                       child: Input(
-                        text: 'Peso',
+                        text: 'Peso (Kg)',
                         controller: _weightController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -263,7 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3 - 24,
                       child: Input(
-                          text: 'Altura',
+                          text: 'Altura (Cm)',
                           keyboardType: TextInputType.number,
                           controller: _heightController,
                           validator: (value) {
