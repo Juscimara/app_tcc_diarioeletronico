@@ -1,7 +1,6 @@
-import 'package:app_tcc_diarioeletronico/components/drawer.dart';
+import 'package:app_tcc_diarioeletronico/models/notification.dart';
+import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'dart:async';
 import 'dart:ui';
 
 class AlertsScreen extends StatefulWidget {
@@ -12,73 +11,64 @@ class AlertsScreen extends StatefulWidget {
 }
 
 class _AlertsState extends State<AlertsScreen> {
-  final _formKey = GlobalKey<FormState>();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-  @override
-  void initState() {
-    super.initState();
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var android = new AndroidInitializationSettings("@mipmap/ic_launcher");
-    var iOS = new IOSInitializationSettings();
-    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
-    flutterLocalNotificationsPlugin.initialize(initSetttings,
-        onSelectNotification: onSelectNotification);
-  }
-
-  Future onSelectNotification(String payload) {
-    debugPrint("payload : $payload");
-    showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-        title: new Text('Notification'),
-        content: new Text('$payload'),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
-        title: Text("Alertas"),
+        title: Text("Histórico de Alertas"),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                IconButton(
-                  onPressed: showNotification, 
-                  icon: Icon(Icons.notifications),
-                ),
-                 IconButton(
-                  onPressed: cancelNotification, 
-                  icon: Icon(Icons.delete),
-                ),
-              ],
-            ),
-          ),
-        ),
+      body: SafeArea(
+        child: StreamBuilder<List<NotificationModel>>(
+            stream: FirestoreService().getNotifications(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<NotificationModel> notifications = snapshot.data ?? [];
+                return ListView.builder(
+                  itemCount: notifications.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        color: Color(0xFFFFD185),
+                        child: Column(
+                          children: [
+                            Icon(Icons.notifications),
+                                Text(
+                                  '\n Título: ' +
+                                      notifications[index].notificacao +
+                                      '\n' +
+                                      'Data: ' +
+                                      notifications[index].dataFormatada +
+                                      ' Horário: ' +
+                                      notifications[index].horario +
+                                      '\n\n' +
+                                      notifications[index].textoNoitificacao +
+                                      '\n',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            )
+                        )),
+                  );
+              } else
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(Color(0xFF26A69A)),
+                  ),
+                );
+            }),
       ),
-      drawer: Menu(),
     );
-  }
-
-  showNotification() async {
-    var android = new AndroidNotificationDetails(
-        'channel id', 'channel NAME', 'channel DESCRIPTION',
-        priority: Priority.high, importance: Importance.max);
-    var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'New Tutorial', 'Local Notification', platform,
-        payload: 'AndroidCoding.in');
-  }
-
-  Future<void> cancelNotification() async {
-    await flutterLocalNotificationsPlugin.cancel(0);
   }
 }

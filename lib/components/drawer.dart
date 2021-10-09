@@ -15,7 +15,6 @@ class Menu extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          //UserAccountsDrawerHeader(
           Image.asset(
             'images/blood.png',
             width: 150,
@@ -51,6 +50,18 @@ class Menu extends StatelessWidget {
               }),
           ListTile(
             leading: Icon(
+              Icons.warning_amber_outlined,
+            ),
+            title: Text("Alertas"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlertsScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
               Icons.info_outline,
             ),
             title: Text("Entenda a contagem"),
@@ -69,19 +80,8 @@ class Menu extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RecoverPasswordScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.warning_amber_outlined,
-            ),
-            title: Text("Alertas"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AlertsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => RecoverPasswordScreen()),
               );
             },
           ),
@@ -90,18 +90,6 @@ class Menu extends StatelessWidget {
             title: Text("Sair"),
             onTap: () {
               Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.warning,
-            ),
-            title: Text("Termos de Uso"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TermsScreen()),
-              );
             },
           ),
         ],

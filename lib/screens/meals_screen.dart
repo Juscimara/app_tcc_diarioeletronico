@@ -5,10 +5,13 @@ import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
+import 'package:app_tcc_diarioeletronico/models/notification.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
+import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 
 class MealsScreen extends StatefulWidget {
@@ -19,12 +22,37 @@ class MealsScreen extends StatefulWidget {
 }
 
 class _RefeicaoState extends State<MealsScreen> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  @override
+  void initState() {
+    super.initState();
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    var android = new AndroidInitializationSettings("@mipmap/ic_launcher");
+    var iOS = new IOSInitializationSettings();
+    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(initSetttings,
+        onSelectNotification: onSelectNotification);
+  }
+
+  Future onSelectNotification(String payload) {
+    debugPrint("payload : $payload");
+    showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text('Alerta Refeição'),
+        content: new Text('$payload'),
+      ),
+    );
+  }
+
   List<FoodViewModel> food = [];
   String foodSelected = "";
   bool show = false;
   TextEditingController dropdownValue = TextEditingController();
   TextEditingController qtdController = TextEditingController(text: '1');
   TextEditingController textEditingValue = new TextEditingController();
+  var notificacao, textoNoitificacao;
 
   static final DateTime now = DateTime.now();
   static final DateFormat formatter = DateFormat('dd/MM/yyyy');
@@ -42,6 +70,21 @@ class _RefeicaoState extends State<MealsScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
         title: Text("Adicionar Refeição"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AlertsScreen(),
+                  ));
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -249,13 +292,31 @@ class _RefeicaoState extends State<MealsScreen> {
                               ),
                             ),
                             onPress: () {
-                              //if (_formKey.currentState.validate()){
+                              //if (_formKey.currentState.validate()) {
+                              if (food.length > 0) {
                                 MealsModel r = new MealsModel(
                                     alimentos: food,
                                     horario: dropdownValue.text,
                                     dataAtual: dataFormatter);
                                 FirestoreService().saveMeals(r);
+
+                                if (7 <= 70) {
+                                  showNotificationNiveisNormais();
+                                  notificacao = 'Alerta Refeição';
+                                  textoNoitificacao = 'teste';
+                                  NotificationModel notificationModel =
+                                      new NotificationModel(
+                                          notificacao: notificacao,
+                                          textoNoitificacao: textoNoitificacao,
+                                          horario: dropdownValue.text,
+                                          dataAtual: DateTime.now().toString(),
+                                          dataFormatada: dataFormatter);
+                                  FirestoreService()
+                                      .saveNotification(notificationModel);
+                                }
                                 showAlertDialog(context);
+                              } else
+                                showAlertDialogError(context);
                               //}
                             }),
                       ]),
@@ -267,6 +328,26 @@ class _RefeicaoState extends State<MealsScreen> {
       ),
       drawer: Menu(),
     );
+  }
+
+  showNotificationNiveisNormais() async {
+    var android = new AndroidNotificationDetails(
+        'channel id', 'channel NAME', 'channel DESCRIPTION',
+        priority: Priority.high, importance: Importance.max);
+    var platform = new NotificationDetails(android: android);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Alerta Refeição', 'Refeição em níveis baixos!', platform,
+        payload: 'teste');
+  }
+
+  showNotificationNiveisAlterados() async {
+    var android = new AndroidNotificationDetails(
+        'channel id', 'channel NAME', 'channel DESCRIPTION',
+        priority: Priority.high, importance: Importance.max);
+    var platform = new NotificationDetails(android: android);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Alerta Refeição', 'Refeição em níveis altos!', platform,
+        payload: 'teste');
   }
 }
 
@@ -286,6 +367,20 @@ void showAlertDialog(BuildContext context) {
     actions: [
       okButton,
     ],
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
+}
+
+void showAlertDialogError(BuildContext context) {
+  AlertDialog alerta = AlertDialog(
+    content: Text("Adicione alimentos na lista para salvar a refeição!"),
+    actions: [],
   );
   showDialog(
     barrierDismissible: false,

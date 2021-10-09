@@ -1,5 +1,6 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
+import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,6 +16,21 @@ class _AboutScreenState extends State<AboutScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
         title: Text("Entenda a Contagem"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AlertsScreen(),
+                  ));
+            },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(40.0),

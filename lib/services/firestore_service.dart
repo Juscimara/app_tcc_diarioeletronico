@@ -1,5 +1,6 @@
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
+import 'package:app_tcc_diarioeletronico/models/notification.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,8 +45,12 @@ class FirestoreService {
   //SALVAR
   Future<void> saveBloodglucose(MeasuredBloodglucoseModel bloodglucose) {
     String id = AuthService.getCurrentUser().uid;
-    return _db.collection('usuarios').doc(id).collection('glicemia')
-    .doc().set(bloodglucose.toMap());
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('glicemia')
+        .doc()
+        .set(bloodglucose.toMap());
   }
 
   // Stream<List<MeasuredBloodglucoseModel>> getBloodglucose() {
@@ -73,5 +78,29 @@ class FirestoreService {
     ref.set(refeicao.toMap());
     refeicao.alimentos.map((e) => e.toMap());
     return null;
+  }
+
+  //Salvar Notificação
+  Future<void> saveNotification(NotificationModel notifications) {
+    String id = AuthService.getCurrentUser().uid;
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('notifications')
+        .doc()
+        .set(notifications.toMap());
+  }
+
+  Stream<List<NotificationModel>> getNotifications() {
+    String id = AuthService.getCurrentUser().uid;
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('notifications')
+        .orderBy('data', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((document) => NotificationModel.fromFirestore(document.data()))
+            .toList());
   }
 }
