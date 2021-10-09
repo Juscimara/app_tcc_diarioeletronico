@@ -1,4 +1,5 @@
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
@@ -44,8 +45,12 @@ class FirestoreService {
   //SALVAR
   Future<void> saveBloodglucose(MeasuredBloodglucoseModel bloodglucose) {
     String id = AuthService.getCurrentUser().uid;
-    return _db.collection('usuarios').doc(id).collection('glicemia')
-    .doc().set(bloodglucose.toMap());
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('glicemia')
+        .doc()
+        .set(bloodglucose.toMap());
   }
 
   // Stream<List<MeasuredBloodglucoseModel>> getBloodglucose() {
@@ -72,6 +77,19 @@ class FirestoreService {
     var ref = _db.collection('usuarios').doc(id).collection('refeicao').doc();
     ref.set(refeicao.toMap());
     refeicao.alimentos.map((e) => e.toMap());
+    return null;
+  }
+
+  Future<List<History>> getHistory(DateTime start, DateTime end) {
+    String id = AuthService.getCurrentUser().uid;
+    var ref = _db.collection('usuarios').doc(id);
+    ref
+        .collection('refeicao')
+        .where('replyDate', isGreaterThanOrEqualTo: start)
+        .where('replyDate', isLessThanOrEqualTo: end)
+        .orderBy("replyDate", descending: true)
+        .get()
+        .then((value) => value.docs.map((e) => e.data()));
     return null;
   }
 }

@@ -64,10 +64,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await FirestoreService().saveUser(user);
 
         Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TermsScreen()),
-                            );
+          context,
+          MaterialPageRoute(builder: (context) => TermsScreen()),
+        );
       }
     }
 

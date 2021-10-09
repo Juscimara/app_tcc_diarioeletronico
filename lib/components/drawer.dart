@@ -1,6 +1,7 @@
 import 'package:app_tcc_diarioeletronico/screens/about_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
+import 'package:app_tcc_diarioeletronico/screens/history_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/recoverPassword_screen.dart';
@@ -46,6 +47,15 @@ class Menu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MealsScreen()),
+                );
+              }),
+               ListTile(
+              leading: Icon(Icons.history),
+              title: Text("Histórico"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HistoryScreen()),
                 );
               }),
           ListTile(

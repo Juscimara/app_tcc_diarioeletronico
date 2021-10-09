@@ -12,19 +12,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final firestoreservice = FirestoreService();
 
-  void init () async{
-     //BloodglucoseRepository.listBloodglucose = await firestoreservice.getBloodglucose().first;    
+  void init() async {
+    //BloodglucoseRepository.listBloodglucose = await firestoreservice.getBloodglucose().first;
   }
 
   void initState() {
-      init();
-      super.initState();
-   }
+    init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     //final glicemia_list = Provider.of<List<Bloodglucose>>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
@@ -50,27 +50,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     subtitle: Text(
-                      BloodglucoseRepository.listBloodglucose[i].glicemia ?? "teste",
+                      BloodglucoseRepository.listBloodglucose[i].glicemia ??
+                          "teste",
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 18,
                       ),
                     ),
-
                     trailing: IconButton(
                         icon: Icon(Icons.edit),
                         color: Colors.yellow[900],
                         iconSize: 28,
                         onPressed: () => {}
                         // Navigator.of(context).push(
-           //         builder: (context) => BloodGlucoseScreen(
+                        //         builder: (context) => BloodGlucoseScreen(
                         //             glicemia: glicemia_list[i]),
                         //       ),
-                            ),
+                        ),
                   ),
                 );
               },
-            ): Center(child: Text('Nenhum acompanhamento encontrado!'),
+            )
+          : Center(
+              child: Text('Nenhum acompanhamento encontrado!'),
             ),
       floatingActionButton: FloatingActionButton(
         child: IconButton(
