@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
+import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/notification.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
+import 'package:app_tcc_diarioeletronico/screens/history_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,6 +110,19 @@ class FirestoreService {
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((document) => NotificationModel.fromFirestore(document.data()))
+            .toList());
+  }
+
+  Stream<List<historyModel>> getHistory() {
+    String id = AuthService.getCurrentUser().uid;
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('refeicao')
+        .orderBy('data', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((document) => historyModel.fromFirestore(document.data()))
             .toList());
   }
 }

@@ -1,5 +1,6 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
+import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
 import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
@@ -21,6 +22,7 @@ class _HistoryState extends State<HistoryScreen> {
   bool show = false;
   TextEditingController qtdController = TextEditingController(text: '1');
   TextEditingController textEditingValue = new TextEditingController();
+  TextEditingController dropdownValue = TextEditingController();
   TextEditingController dateinput = TextEditingController();
 
   @override
@@ -31,7 +33,7 @@ class _HistoryState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
- /*  FoodModel alimento = FoodsRepository.listAlimento
+    /*  FoodModel alimento = FoodsRepository.listAlimento
         .where((alimento) => alimento.Alimento.toLowerCase()
             .contains(dateSelected.toLowerCase()))
         .first; */
@@ -42,7 +44,6 @@ class _HistoryState extends State<HistoryScreen> {
       ),
       body: Container(
         padding: EdgeInsets.all(15),
-        height: 150,
         child: Column(children: [
           TextField(
             controller: dateinput,
@@ -97,31 +98,40 @@ class _HistoryState extends State<HistoryScreen> {
             },
           ),
           Text("\n"),
-          Autocomplete<String>(
-            optionsBuilder: (textEditingValue) {
-              if (textEditingValue.text == '') {
-                return const Iterable<String>.empty();
+          Dropdown(
+            options: ['Selecione', 'Refeição', 'Glicemia'],
+            text: "Selecione hitórico abaixo:",
+            controller: dropdownValue,
+            validator: (value) {
+              if (value == 'Selecione') {
+                return 'Informe';
               }
-              return FoodsRepository.listAlimento
-                  .where((alimento) => alimento.Alimento.toLowerCase()
-                      .contains(textEditingValue.text.toLowerCase()))
-                  .map((alimentoModel) => alimentoModel.Alimento);
+              return null;
             },
-            onSelected: (String selection) {
-              setState(() {
-                show = true;
-                dateSelected = selection;
-              });
-            },
-            fieldViewBuilder:
-                (context, controller, focusNode, onEditingComplete) {
-              this.textEditingValue = controller;
-              return Button(
+          ),
+          Autocomplete<String>(optionsBuilder: (textEditingValue) {
+            if (textEditingValue.text == '') {
+              return const Iterable<String>.empty();
+            }
+            return FoodsRepository.listAlimento
+                .where((alimento) => alimento.Alimento.toLowerCase()
+                    .contains(textEditingValue.text.toLowerCase()))
+                .map((alimentoModel) => alimentoModel.Alimento);
+          }, onSelected: (String selection) {
+            setState(() {
+              show = true;
+              dateSelected = selection;
+            });
+          }, fieldViewBuilder:
+              (context, controller, focusNode, onEditingComplete) {
+            this.textEditingValue = controller;
+            return Column(children: [
+              Button(
                 width: MediaQuery.of(context).size.width,
                 heigth: 50,
                 widget: Center(
                     child: Text(
-                  'Visualizar',
+                  'Pesquisar histórico',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -129,15 +139,11 @@ class _HistoryState extends State<HistoryScreen> {
                   ),
                 )),
                 onPress: () {
-                  setState(() {
-                    /* food.add(new FoodViewModel(
-                        alimento: alimento,
-                        quantidade: int.parse(qtdController.text))); */
-                  });
+                  
                 },
-              );
-            },
-          ),
+              )
+            ]);
+          }),
           Text("\n"),
           show
               ? Card(
@@ -211,15 +217,15 @@ class _HistoryState extends State<HistoryScreen> {
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  /*  Text(
-                              "Glicemia: " +
-                                  (e.alimento.Calorias * e.quantidade)
-                                      .toString(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ), */
+                                  /* Text(
+                                    "Glicemia: " +
+                                        (e.alimento.Calorias * e.quantidade)
+                                            .toString(),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ), */
                                   IconButton(
                                     icon: Icon(Icons.remove_circle_outline),
                                     color: Colors.black,
