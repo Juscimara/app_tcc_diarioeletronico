@@ -140,7 +140,8 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                         new MeasuredBloodglucoseModel(
                             glicemia: bloodglucoseController.text,
                             horario: dropdownValue.text,
-                            dataAtual: dataFormatter);
+                            dataAtual: DateTime.now(),
+                            data: dataFormatter);
                     FirestoreService().saveBloodglucose(mb);
 
                     if(int.parse(bloodglucoseController.text) <= 70)

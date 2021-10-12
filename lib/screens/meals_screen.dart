@@ -297,37 +297,39 @@ class _RefeicaoState extends State<MealsScreen> {
                             ),
                             onPress: () async {
                               //if (_formKey.currentState.validate()) {
-                                if (food.length > 0) {
-                                  MealsModel r = new MealsModel(
-                                      alimentos: food,
-                                      horario: dropdownValue.text,
-                                      dataAtual: DateTime.now().toString(),
-                                      dataFormatada: dataFormatter);
-                                  FirestoreService().saveMeals(r);
+                              if (food.length > 0) {
+                                MealsModel r = new MealsModel(
+                                    alimentos: food,
+                                    horario: dropdownValue.text,
+                                    dataAtual: DateTime.now(),
+                                    dataFormatada: dataFormatter);
+                                FirestoreService().saveMeals(r);
 
-                                  var soma =
-                                      await FirestoreService().getMeals();
-                                  var valorEsperado = await calcCalories();
+                                var soma = await FirestoreService().getMeals();
+                                var valorEsperado = await calcCalories();
+                                print("===============================");
+                                print(soma.Calorias);
+                                print(soma.CHO);
+                                print("+++++++++++++++++++++++++++++++");
+                                print(valorEsperado);
 
-                                  if (soma.Calorias > valorEsperado) {
-                                    showNotificationNiveisNormais();
-                                    notificacao = 'Alerta Refeição';
-                                    textoNoitificacao = 'teste';
-                                    NotificationModel notificationModel =
-                                        new NotificationModel(
-                                            notificacao: notificacao,
-                                            textoNoitificacao:
-                                                textoNoitificacao,
-                                            horario: dropdownValue.text,
-                                            dataAtual:
-                                                DateTime.now().toString(),
-                                            dataFormatada: dataFormatter);
-                                    FirestoreService()
-                                        .saveNotification(notificationModel);
-                                  }
-                                  showAlertDialog(context);
-                                } else
-                                  showAlertDialogError(context);
+                                if (soma.Calorias > valorEsperado) {
+                                  showNotificationNiveisNormais();
+                                  notificacao = 'Alerta Refeição';
+                                  textoNoitificacao = 'teste';
+                                  NotificationModel notificationModel =
+                                      new NotificationModel(
+                                          notificacao: notificacao,
+                                          textoNoitificacao: textoNoitificacao,
+                                          horario: dropdownValue.text,
+                                          dataAtual: DateTime.now().toString(),
+                                          dataFormatada: dataFormatter);
+                                  FirestoreService()
+                                      .saveNotification(notificationModel);
+                                }
+                                showAlertDialog(context);
+                              } else
+                                showAlertDialogError(context);
                               //}
                             }),
                       ]),
