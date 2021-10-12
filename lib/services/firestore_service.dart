@@ -91,17 +91,16 @@ class FirestoreService {
             .map((e) => FoodModel.fromFirestoreConvertObject(e)))
         .toList();
 
-    //List alimentos = [];
     double somaCal = 0, somaCho = 0;
 
     for (var i = 0; i < list.length; i++) {
       for (var j = 0; j < list[i].length; j++) {
-        //alimentos.add(list[i].toList()[j]);
         somaCal += (list[i].toList()[j]).Calorias;
         somaCho += (list[i].toList()[j]).CHO;
       }
     }
-    return new FoodModel(Calorias: somaCal, CHO: somaCho);
+    
+    return new FoodModel(CHO: somaCho, Calorias: somaCal);
   }
 
   //Salvar Notificação

@@ -3,7 +3,7 @@ import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 class MealsModel {
   List<FoodViewModel> alimentos;
   String horario;
-  String dataAtual;
+  DateTime dataAtual;
   String dataFormatada;
 
   MealsModel({this.alimentos, this.horario, this.dataAtual, this.dataFormatada});

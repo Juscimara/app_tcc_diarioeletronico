@@ -1,15 +1,17 @@
 class MeasuredBloodglucoseModel {
   String glicemia;
   String horario;
-  String dataAtual;
+  DateTime dataAtual;
+  String data;
 
-  MeasuredBloodglucoseModel({this.glicemia, this.horario, this.dataAtual});
+  MeasuredBloodglucoseModel({this.glicemia, this.horario, this.dataAtual, this.data});
 
   Map<String, dynamic> toMap() {
     return{
       'glicemia': glicemia,
       'horario': horario,
-      'data': dataAtual
+      'dataAtual': dataAtual,
+      'data': data
     };
   }
 }
