@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
           unselectedWidgetColor: Color(0xFF31CF2B),
         ),
-        home: HistoryScreen(),
+        home: MyHomePage(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
         ],

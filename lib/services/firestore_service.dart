@@ -135,20 +135,17 @@ class FirestoreService {
             .toList());
   }
 
-  Future<List<historyModel>> getHistory(
+  Future<List<List<historyModel>>> getHistory(
       DateTime startDate, DateTime endDate) async {
     startDate = new DateTime(startDate.year, startDate.month, startDate.day);
     endDate = new DateTime(endDate.year, endDate.month, endDate.day + 1);
-    print(startDate);
-    print(endDate);
     String id = AuthService.getCurrentUser().uid;
-    return await _db
+    var result = await _db
         .collection('usuarios')
         .doc(id)
         .collection('refeicao')
         .where('dataAtual', isGreaterThanOrEqualTo: startDate)
         .where('dataAtual', isLessThanOrEqualTo: endDate)
-        .orderBy('dataAtual', descending: true)
         .get()
         .then(
           (value) => value.docs
@@ -157,5 +154,12 @@ class FirestoreService {
               )
               .toList(),
         );
+
+    var list = result
+        .map((e) => (jsonDecode(e.alimentos) as List)
+            .map((e) => historyModel.fromFirestore(e)).toList())
+        .toList();
+   
+    return list;
   }
 }

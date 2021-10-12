@@ -133,10 +133,10 @@ class _HistoryState extends State<HistoryScreen> {
                       .getHistory(DateTime.parse(startDateController.text),
                           DateTime.parse(endDateController.text))
                       .then((value) => {
-                            value.forEach((element) {
-                             /*  var history = FoodModel.fromFirestoreConvertObject(jsonDecode()); */
-                           /*    print(history); */
-                            })
+                            /* value.forEach((element) {
+                              var history = jsonDecode(element.alimentos); */
+                              print(value)
+                          /*   }) */
                           });
                 },
               )

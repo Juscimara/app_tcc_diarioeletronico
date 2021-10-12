@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class historyModel {
   String alimentos;
   DateTime data;
@@ -21,6 +23,6 @@ class historyModel {
       historyModel(
         alimentos: firestoreDocument['alimentos'],
         glicemia: firestoreDocument['glicemia'],
-        data: firestoreDocument['data'],
+        data: (firestoreDocument['dataAtual'] as Timestamp).toDate(),
       );
 }
