@@ -1,17 +1,17 @@
 class historyModel {
-  String alimento;
+  String alimentos;
   DateTime data;
   String glicemia;
 
   historyModel({
-    this.alimento,
+    this.alimentos,
     this.data,
     this.glicemia,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'alimento': alimento,
+      'alimento': alimentos,
       'glicemia': glicemia,
       'data': data,
     };
@@ -19,7 +19,7 @@ class historyModel {
 
   factory historyModel.fromFirestore(Map<String, dynamic> firestoreDocument) =>
       historyModel(
-        alimento: firestoreDocument['alimento'],
+        alimentos: firestoreDocument['alimentos'],
         glicemia: firestoreDocument['glicemia'],
         data: firestoreDocument['data'],
       );

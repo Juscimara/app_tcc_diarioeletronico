@@ -40,6 +40,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  date_time_picker: "^2.0.0"
 
 flutter_icons:
   image_path: "images/logo.png"

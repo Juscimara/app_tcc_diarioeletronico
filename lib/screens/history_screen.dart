@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
@@ -5,7 +7,9 @@ import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
+import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -23,11 +27,13 @@ class _HistoryState extends State<HistoryScreen> {
   TextEditingController qtdController = TextEditingController(text: '1');
   TextEditingController textEditingValue = new TextEditingController();
   TextEditingController dropdownValue = TextEditingController();
-  TextEditingController dateinput = TextEditingController();
-
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+  DateTime pickedDateInitial;
+  DateTime pickedDateFinal;
   @override
   void initState() {
-    dateinput.text = ""; //set the initial value of text field
+    // dateinput.text = ""; //set the initial value of text field
     super.initState();
   }
 
@@ -45,57 +51,41 @@ class _HistoryState extends State<HistoryScreen> {
       body: Container(
         padding: EdgeInsets.all(15),
         child: Column(children: [
-          TextField(
-            controller: dateinput,
-            decoration: InputDecoration(
-                icon: Icon(Icons.calendar_today),
-                labelText: "Insira a data inicial"),
-            readOnly: true,
-            onTap: () async {
-              DateTime pickedDateInitial = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101));
-
-              if (pickedDateInitial != null) {
-                print(pickedDateInitial);
-                String formattedDateInitial =
-                    DateFormat('dd-MM-yyyy').format(pickedDateInitial);
-                print(formattedDateInitial);
-                setState(() {
-                  dateinput.text = formattedDateInitial;
-                });
-              } else {
-                print("A data não foi selecionada!");
-              }
+          DateTimePicker(
+            type: DateTimePickerType.date,
+            locale: Locale('pt', "BR"),
+            dateMask: 'dd/MM/yyyy',
+            //initialValue: DateTime.now().toString(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime.now(),
+            icon: Icon(Icons.event),
+            dateLabelText: 'Data inicial',
+            onChanged: (date) => startDateController.text = date,
+            validator: (val) {
+              if (val.isEmpty)
+                return "Informe uma data";
+              else
+                return null;
             },
+            onSaved: (val) => print(val),
           ),
-          TextField(
-            controller: dateinput,
-            decoration: InputDecoration(
-                icon: Icon(Icons.calendar_today),
-                labelText: "Insira a data final"),
-            readOnly: true,
-            onTap: () async {
-              DateTime pickedDateFinal = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101));
-
-              if (pickedDateFinal != null) {
-                print(pickedDateFinal);
-                String formattedDateFinal =
-                    DateFormat('dd-MM-yyyy').format(pickedDateFinal);
-                print(formattedDateFinal);
-                setState(() {
-                  dateinput.text = formattedDateFinal;
-                });
-              } else {
-                print("A data não foi selecionada!");
-              }
+          DateTimePicker(
+            type: DateTimePickerType.date,
+            locale: Locale('pt', "BR"),
+            dateMask: 'dd/MM/yyyy',
+            //initialValue: DateTime.now().toString(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime.now(),
+            icon: Icon(Icons.event),
+            dateLabelText: 'Data final',
+            onChanged: (date) => endDateController.text = date,
+            validator: (val) {
+              if (val.isEmpty)
+                return "Informe uma data";
+              else
+                return null;
             },
+            onSaved: (val) => print(val),
           ),
           Text("\n"),
           Dropdown(
@@ -139,7 +129,15 @@ class _HistoryState extends State<HistoryScreen> {
                   ),
                 )),
                 onPress: () {
-                  
+                  FirestoreService()
+                      .getHistory(DateTime.parse(startDateController.text),
+                          DateTime.parse(endDateController.text))
+                      .then((value) => {
+                            value.forEach((element) {
+                             /*  var history = FoodModel.fromFirestoreConvertObject(jsonDecode()); */
+                           /*    print(history); */
+                            })
+                          });
                 },
               )
             ]);

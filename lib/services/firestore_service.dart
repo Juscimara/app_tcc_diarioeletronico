@@ -109,20 +109,35 @@ class FirestoreService {
         .orderBy('data', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((document) => NotificationModel.fromFirestore(document.data()))
+            .map(
+              (document) => NotificationModel.fromFirestore(
+                document.data(),
+              ),
+            )
             .toList());
   }
 
-  Stream<List<historyModel>> getHistory() {
+  Future<List<historyModel>> getHistory(
+      DateTime startDate, DateTime endDate) async {
+    startDate = new DateTime(startDate.year, startDate.month, startDate.day);
+    endDate = new DateTime(endDate.year, endDate.month, endDate.day + 1);
+    print(startDate);
+    print(endDate);
     String id = AuthService.getCurrentUser().uid;
-    return _db
+    return await _db
         .collection('usuarios')
         .doc(id)
         .collection('refeicao')
-        .orderBy('data', descending: true)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((document) => historyModel.fromFirestore(document.data()))
-            .toList());
+        .where('dataAtual', isGreaterThanOrEqualTo: startDate)
+        .where('dataAtual', isLessThanOrEqualTo: endDate)
+        .orderBy('dataAtual', descending: true)
+        .get()
+        .then(
+          (value) => value.docs
+              .map(
+                (e) => historyModel.fromFirestore(e.data()),
+              )
+              .toList(),
+        );
   }
 }

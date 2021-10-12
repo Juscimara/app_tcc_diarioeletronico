@@ -1,7 +1,10 @@
+import 'package:app_tcc_diarioeletronico/models/history.dart';
+import 'package:app_tcc_diarioeletronico/screens/history_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +21,14 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
           unselectedWidgetColor: Color(0xFF31CF2B),
         ),
-        home: MyHomePage());
+        home: HistoryScreen(),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('pt')
+        ],
+        );
   }
 }
 
