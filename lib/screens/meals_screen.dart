@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
@@ -59,11 +61,6 @@ class _RefeicaoState extends State<MealsScreen> {
   static final DateFormat formatter = DateFormat('dd/MM/yyyy');
   final String dataFormatter = formatter.format(now);
 
-  // Future<double> verifyFoods() async
-  // {
-  //   await FirestoreService().getMeals();
-  // }
-
   @override
   final _formKey = GlobalKey<FormState>();
   Widget build(BuildContext context) {
@@ -72,6 +69,7 @@ class _RefeicaoState extends State<MealsScreen> {
         .where((alimento) => alimento.Alimento.toLowerCase()
             .contains(foodSelected.toLowerCase()))
         .first;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
@@ -297,34 +295,39 @@ class _RefeicaoState extends State<MealsScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            onPress: () {
+                            onPress: () async {
                               //if (_formKey.currentState.validate()) {
-                              if (food.length > 0) {
-                                MealsModel r = new MealsModel(
-                                    alimentos: food,
-                                    horario: dropdownValue.text,
-                                    dataAtual: dataFormatter);
-                                FirestoreService().saveMeals(r);
-                                
-                                //verifyFoods().then((value) => print(value));
+                                if (food.length > 0) {
+                                  MealsModel r = new MealsModel(
+                                      alimentos: food,
+                                      horario: dropdownValue.text,
+                                      dataAtual: DateTime.now().toString(),
+                                      dataFormatada: dataFormatter);
+                                  FirestoreService().saveMeals(r);
 
-                                if (7 <= 70) {
-                                  showNotificationNiveisNormais();
-                                  notificacao = 'Alerta Refeição';
-                                  textoNoitificacao = 'teste';
-                                  NotificationModel notificationModel =
-                                      new NotificationModel(
-                                          notificacao: notificacao,
-                                          textoNoitificacao: textoNoitificacao,
-                                          horario: dropdownValue.text,
-                                          dataAtual: DateTime.now().toString(),
-                                          dataFormatada: dataFormatter);
-                                  FirestoreService()
-                                      .saveNotification(notificationModel);
-                                }
-                                showAlertDialog(context);
-                              } else
-                                showAlertDialogError(context);
+                                  var soma =
+                                      await FirestoreService().getMeals();
+                                  var valorEsperado = await calcCalories();
+
+                                  if (soma.Calorias > valorEsperado) {
+                                    showNotificationNiveisNormais();
+                                    notificacao = 'Alerta Refeição';
+                                    textoNoitificacao = 'teste';
+                                    NotificationModel notificationModel =
+                                        new NotificationModel(
+                                            notificacao: notificacao,
+                                            textoNoitificacao:
+                                                textoNoitificacao,
+                                            horario: dropdownValue.text,
+                                            dataAtual:
+                                                DateTime.now().toString(),
+                                            dataFormatada: dataFormatter);
+                                    FirestoreService()
+                                        .saveNotification(notificationModel);
+                                  }
+                                  showAlertDialog(context);
+                                } else
+                                  showAlertDialogError(context);
                               //}
                             }),
                       ]),

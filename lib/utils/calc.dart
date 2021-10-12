@@ -1,7 +1,8 @@
 import 'package:app_tcc_diarioeletronico/models/users.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 
-Future<String> calcIMC(UserData userData) async {
+Future<String> calcIMC() async {  
+  UserData userData = await FirestoreService().getUserData();
   double imc = double.parse(userData.weight) / ((double.parse(userData.height) / 100) * (double.parse(userData.height) / 100));
   if (int.parse(userData.age) <= 59) {
     if (imc < 18.5)
@@ -22,8 +23,9 @@ Future<String> calcIMC(UserData userData) async {
   }
 }
 
-Future<double> calcCalories(UserData userData) async {
-  String imc = await calcIMC(userData);
+Future<double> calcCalories() async {  
+  UserData userData = await FirestoreService().getUserData();
+  String imc = await calcIMC();
   double calories;
   if (imc == "Magreza" || imc == "Normal")
     calories = double.parse(userData.weight) * 27;
@@ -33,8 +35,7 @@ Future<double> calcCalories(UserData userData) async {
 }
 
 Future<int> calcCarbo() async {
-  UserData userData = await FirestoreService().getUserData();
-  double calories = await calcCalories(userData);
+  double calories = await calcCalories();
   double carbo = (calories * 0.55) / 4;
   return carbo.toInt();
 }
