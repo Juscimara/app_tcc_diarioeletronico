@@ -39,9 +39,9 @@ class _AboutScreenState extends State<AboutScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Card(
-                elevation: 5,
+                elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(17),                  
+                  borderRadius: BorderRadius.circular(5),                  
                 ),
                 color: Color(0xFFFFD185),
                 child: Center(

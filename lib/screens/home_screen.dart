@@ -1,7 +1,6 @@
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/bloodglucose_repository.dart';
 import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/bloodglucose_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
@@ -66,8 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icon(Icons.edit),
                         color: Colors.yellow[900],
                         iconSize: 28,
-                        onPressed: () => {}
-                        ),
+                        onPressed: () => {}),
                   ),
                 );
               },

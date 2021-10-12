@@ -306,17 +306,17 @@ class _RefeicaoState extends State<MealsScreen> {
                                 FirestoreService().saveMeals(r);
 
                                 var soma = await FirestoreService().getMeals();
-                                var valorEsperado = await calcCalories();
-                                print("===============================");
-                                print(soma.Calorias);
-                                print(soma.CHO);
-                                print("+++++++++++++++++++++++++++++++");
-                                print(valorEsperado);
+                                var valorEsperadoCalorias =
+                                    await calcCalories();
+                                var valorEsperadoCarboidratos =
+                                    await calcCarbo();
 
-                                if (soma.Calorias > valorEsperado) {
-                                  showNotificationNiveisNormais();
-                                  notificacao = 'Alerta Refeição';
-                                  textoNoitificacao = 'teste';
+                                if (soma.Calorias > valorEsperadoCalorias) {
+                                  showNotificationNiveisCaloricosAltos();
+                                  notificacao =
+                                      'Alerta Refeição- Refeição com níveis caloricos muito altos!';
+                                  textoNoitificacao =
+                                      'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de calorias inserida.';
                                   NotificationModel notificationModel =
                                       new NotificationModel(
                                           notificacao: notificacao,
@@ -327,6 +327,24 @@ class _RefeicaoState extends State<MealsScreen> {
                                   FirestoreService()
                                       .saveNotification(notificationModel);
                                 }
+
+                                if (soma.CHO > valorEsperadoCarboidratos) {
+                                  showNotificationNiveisCaloricosAltos();
+                                  notificacao =
+                                      'Alerta Refeição- Refeição com níveis carboidratos muito altos!';
+                                  textoNoitificacao =
+                                      'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de carboidratos inserida.';
+                                  NotificationModel notificationModel =
+                                      new NotificationModel(
+                                          notificacao: notificacao,
+                                          textoNoitificacao: textoNoitificacao,
+                                          horario: dropdownValue.text,
+                                          dataAtual: DateTime.now().toString(),
+                                          dataFormatada: dataFormatter);
+                                  FirestoreService()
+                                      .saveNotification(notificationModel);
+                                }
+
                                 showAlertDialog(context);
                               } else
                                 showAlertDialogError(context);
@@ -343,24 +361,26 @@ class _RefeicaoState extends State<MealsScreen> {
     );
   }
 
-  showNotificationNiveisNormais() async {
+  showNotificationNiveisCaloricosAltos() async {
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'channel DESCRIPTION',
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Alerta Refeição', 'Refeição em níveis baixos!', platform,
-        payload: 'teste');
+    await flutterLocalNotificationsPlugin.show(0, 'Alerta Refeição',
+        'Refeição com níveis caloricos muito altos!', platform,
+        payload:
+            'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de calorias inserida.');
   }
 
-  showNotificationNiveisAlterados() async {
+  showNotificationNiveisCarboidratosAltos() async {
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'channel DESCRIPTION',
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Alerta Refeição', 'Refeição em níveis altos!', platform,
-        payload: 'teste');
+    await flutterLocalNotificationsPlugin.show(0, 'Alerta Refeição',
+        'Refeição com níveis de carboidratos muito altos!', platform,
+        payload:
+            'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de carboidratos inserida.');
   }
 }
 

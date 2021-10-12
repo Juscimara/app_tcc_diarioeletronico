@@ -74,28 +74,30 @@ class _TermsScreenState extends State<TermsScreen> {
                       ),
                     ],
                   ),
-                 SizedBox(width: 30),
+                  SizedBox(width: 30),
                   Column(children: [
-                     isChecked ? Button(
-                      width: 130,
-                      heigth: 40,
-                      widget: Center(
-                        child: Text(
-                          'Continuar',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      onPress: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
-                      },
-                    )
-                  : Container(),
+                    isChecked
+                        ? Button(
+                            width: 130,
+                            heigth: 40,
+                            widget: Center(
+                              child: Text(
+                                'Continuar',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            onPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                              );
+                            },
+                          )
+                        : Container(),
                   ]),
                 ],
               ),

@@ -1,22 +1,34 @@
 class UserData {
-  String id, name, phone, email, password, district, street, num, city, uf, cpf, weight, height, age;
+  String id,
+      name,
+      phone,
+      email,
+      password,
+      district,
+      street,
+      num,
+      city,
+      uf,
+      cpf,
+      weight,
+      height,
+      age;
 
-  UserData({
-    this.id,
-    this.name,
-    this.phone,
-    this.email,
-    this.password,
-    this.district,
-    this.street,
-    this.num,
-    this.city,
-    this.uf,
-    this.cpf,
-    this.weight,
-    this.height,
-    this.age
-  });
+  UserData(
+      {this.id,
+      this.name,
+      this.phone,
+      this.email,
+      this.password,
+      this.district,
+      this.street,
+      this.num,
+      this.city,
+      this.uf,
+      this.cpf,
+      this.weight,
+      this.height,
+      this.age});
 
   Map<String, dynamic> toMap() {
     return {
@@ -31,9 +43,9 @@ class UserData {
       'city': city,
       'uf': uf,
       'cpf': cpf,
-      'weight':weight,
-      'height':height,
-      'age':age
+      'weight': weight,
+      'height': height,
+      'age': age
     };
   }
 
