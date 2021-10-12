@@ -8,11 +8,11 @@ class FoodViewModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'alimento': alimento.Alimento,
-      'quantidade': quantidade,
-      'gOuMlResult': quantidade * alimento.gOuMl,
-      'Calorias': quantidade * alimento.Calorias,
-      'CHO': quantidade * alimento.CHO
+      '\"alimento\"': '\"' + alimento.Alimento + '\"',
+      '\"quantidade\"': quantidade,
+      '\"gOuMlResult\"': quantidade * alimento.gOuMl,
+      '\"Calorias\"': quantidade * alimento.Calorias,
+      '\"CHO\"': quantidade * alimento.CHO
     };
   }
 

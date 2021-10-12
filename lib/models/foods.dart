@@ -25,11 +25,12 @@ class FoodModel {
         Calorias = double.parse(firestoredocument['Calorias'].toString());
 
   FoodModel.fromFirestoreConvertObject(Map<String, dynamic> firestoredocument)
-      : Alimento = firestoredocument['alimento'],
-        gOuMl = double.parse(firestoredocument['gOuMlResult'].toString()),
-        CHO = double.parse(firestoredocument['CHO'].toString()),
-        Calorias = double.parse(firestoredocument['Calorias'].toString()),
-        quantidade = int.parse(firestoredocument['quantidade'].toString());
+      : id = firestoredocument['id'],
+        Alimento = firestoredocument['alimento'],
+        gOuMl = firestoredocument['gOuMlResult'],
+        CHO = firestoredocument['CHO'],
+        Calorias = firestoredocument['Calorias'],
+        quantidade = firestoredocument['quantidade'];
 }
 
 List<dynamic> JsonAlimentos = [
