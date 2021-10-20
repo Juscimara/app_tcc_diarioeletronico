@@ -5,6 +5,7 @@ import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
 import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
+import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
@@ -33,16 +34,11 @@ class _HistoryState extends State<HistoryScreen> {
   DateTime pickedDateFinal;
   @override
   void initState() {
-    // dateinput.text = ""; //set the initial value of text field
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    /*  FoodModel alimento = FoodsRepository.listAlimento
-        .where((alimento) => alimento.Alimento.toLowerCase()
-            .contains(dateSelected.toLowerCase()))
-        .first; */
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
@@ -55,7 +51,6 @@ class _HistoryState extends State<HistoryScreen> {
             type: DateTimePickerType.date,
             locale: Locale('pt', "BR"),
             dateMask: 'dd/MM/yyyy',
-            //initialValue: DateTime.now().toString(),
             firstDate: DateTime(1900),
             lastDate: DateTime.now(),
             icon: Icon(Icons.event),
@@ -133,11 +128,19 @@ class _HistoryState extends State<HistoryScreen> {
                       .getHistory(DateTime.parse(startDateController.text),
                           DateTime.parse(endDateController.text))
                       .then((value) => {
+
+                      });
+                  /* setState(() {
+                    food.add(new FoodViewModel(
+                        alimento: alimento,
+                        quantidade: int.parse(qtdController.text)));
+                  }); */
+                 /*  .then((value) => {
                             /* value.forEach((element) {
                               var history = jsonDecode(element.alimentos); */
                               print(value)
                           /*   }) */
-                          });
+                          }); */
                 },
               )
             ]);
