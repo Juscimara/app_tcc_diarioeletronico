@@ -5,8 +5,6 @@ import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/notification.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
-import 'package:app_tcc_diarioeletronico/screens/history_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,8 +28,8 @@ class FirestoreService {
   }
 
   void _changePassword(String password) async {
+    //String user = await FirebaseAuth.instance.currentUser.email;
     User user = await FirebaseAuth.instance.currentUser;
-
     user.updatePassword(password).then((_) {
       print("Senha alterada com sucesso!");
     }).catchError((error) {
@@ -102,7 +100,7 @@ class FirestoreService {
         somaCho += (list[i].toList()[j]).CHO;
       }
     }
-    
+
     return new FoodModel(CHO: somaCho, Calorias: somaCal);
   }
 
@@ -156,9 +154,10 @@ class FirestoreService {
 
     var list = result
         .map((e) => (jsonDecode(e.alimentos) as List)
-            .map((e) => historyModel.fromFirestore(e)).toList())
+            .map((e) => historyModel.fromFirestore(e))
+            .toList())
         .toList();
-   
+
     return list;
   }
 }

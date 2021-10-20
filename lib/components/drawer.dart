@@ -5,11 +5,16 @@ import 'package:app_tcc_diarioeletronico/screens/history_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/meals_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/recoverPassword_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/terms_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
   const Menu({Key key}) : super(key: key);
+  
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -49,7 +54,7 @@ class Menu extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => MealsScreen()),
                 );
               }),
-               ListTile(
+          ListTile(
               leading: Icon(Icons.history),
               title: Text("Histórico"),
               onTap: () {
@@ -99,6 +104,7 @@ class Menu extends StatelessWidget {
             leading: Icon(Icons.exit_to_app_rounded),
             title: Text("Sair"),
             onTap: () {
+              _signOut();
               Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
             },
           ),

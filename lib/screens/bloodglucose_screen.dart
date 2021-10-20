@@ -42,7 +42,7 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
       ),
     );
   }
-  
+
   @override
   TextEditingController bloodglucoseController = TextEditingController();
   TextEditingController dropdownValue = TextEditingController();
@@ -144,32 +144,33 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                             data: dataFormatter);
                     FirestoreService().saveBloodglucose(mb);
 
-                    if(int.parse(bloodglucoseController.text) <= 70)
-                    {
+                    if (int.parse(bloodglucoseController.text) <= 70) {
                       showNotificationNiveisNormais();
-                      notificacao = 'Alerta Glicemia- Glicemia em níveis baixos!';
-                      textoNoitificacao = 'Glicemia em níveis baixos! O que fazer? A hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.';
+                      notificacao =
+                          'Alerta Glicemia- Glicemia em níveis baixos!';
+                      textoNoitificacao =
+                          'Glicemia em níveis baixos! O que fazer? A hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.';
                       NotificationModel notificationModel =
-                        new NotificationModel(
-                            notificacao: notificacao,
-                            textoNoitificacao: textoNoitificacao,
-                            horario: dropdownValue.text,
-                            dataAtual: DateTime.now().toString(),
-                            dataFormatada: dataFormatter);
+                          new NotificationModel(
+                              notificacao: notificacao,
+                              textoNoitificacao: textoNoitificacao,
+                              horario: dropdownValue.text,
+                              dataAtual: DateTime.now().toString(),
+                              dataFormatada: dataFormatter);
                       FirestoreService().saveNotification(notificationModel);
-                    }
-                    else if(int.parse(bloodglucoseController.text) >= 100)
-                    {
+                    } else if (int.parse(bloodglucoseController.text) >= 100) {
                       showNotificationNiveisAlterados();
-                      notificacao = 'Alerta Glicemia- Glicemia com níveis altos!';
-                      textoNoitificacao = 'Cuidado! Glicemia com níveis altos! O que fazer? Insira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.';
+                      notificacao =
+                          'Alerta Glicemia- Glicemia com níveis altos!';
+                      textoNoitificacao =
+                          'Cuidado! Glicemia com níveis altos! O que fazer? Insira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.';
                       NotificationModel notificationModel =
-                        new NotificationModel(
-                            notificacao: notificacao,
-                            textoNoitificacao: textoNoitificacao,
-                            horario: dropdownValue.text,
-                            dataAtual: DateTime.now().toString(),
-                            dataFormatada: dataFormatter);
+                          new NotificationModel(
+                              notificacao: notificacao,
+                              textoNoitificacao: textoNoitificacao,
+                              horario: dropdownValue.text,
+                              dataAtual: DateTime.now().toString(),
+                              dataFormatada: dataFormatter);
                       FirestoreService().saveNotification(notificationModel);
                     }
                     showAlertDialog(context);
@@ -190,8 +191,12 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
     await flutterLocalNotificationsPlugin.show(
-        0, 'Alerta Glicemia', 'Cuidado, glicemia em níveis baixos! O que fazer? Clique para saber mais!', platform,
-        payload: 'Cuidado, calorias em níveis baixos! \nO que fazer? \n\nA hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.');       
+        0,
+        'Alerta Glicemia',
+        'Cuidado, glicemia em níveis baixos! O que fazer? Clique para saber mais!',
+        platform,
+        payload:
+            'Cuidado, calorias em níveis baixos! \nO que fazer? \n\nA hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.');
   }
 
   showNotificationNiveisAlterados() async {
@@ -200,8 +205,12 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
     await flutterLocalNotificationsPlugin.show(
-        0, 'Alerta Glicemia', 'Cuidado, glicemia com níveis altos! O que fazer? Clique para saber mais!', platform,
-        payload: 'Cuidado, glicemia com níveis altos!\nO que fazer? \n\nInsira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');        
+        0,
+        'Alerta Glicemia',
+        'Cuidado, glicemia com níveis altos! O que fazer? Clique para saber mais!',
+        platform,
+        payload:
+            'Cuidado, glicemia com níveis altos!\nO que fazer? \n\nInsira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
   }
 }
 

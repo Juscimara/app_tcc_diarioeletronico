@@ -6,7 +6,8 @@ class MealsModel {
   DateTime dataAtual;
   String dataFormatada;
 
-  MealsModel({this.alimentos, this.horario, this.dataAtual, this.dataFormatada});
+  MealsModel(
+      {this.alimentos, this.horario, this.dataAtual, this.dataFormatada});
 
   Map<String, dynamic> toMap() {
     return {

@@ -5,10 +5,15 @@ class NotificationModel {
   String dataAtual;
   String dataFormatada;
 
-  NotificationModel({this.notificacao, this.textoNoitificacao, this.horario, this.dataAtual, this.dataFormatada});
-  
+  NotificationModel(
+      {this.notificacao,
+      this.textoNoitificacao,
+      this.horario,
+      this.dataAtual,
+      this.dataFormatada});
+
   Map<String, dynamic> toMap() {
-    return{
+    return {
       'notificacao': notificacao,
       'textoNoitificacao': textoNoitificacao,
       'horario': horario,
@@ -16,8 +21,9 @@ class NotificationModel {
       'dataFormatada': dataFormatada
     };
   }
-  
-  factory NotificationModel.fromFirestore(Map<String, dynamic> firestoreDocument) =>
+
+  factory NotificationModel.fromFirestore(
+          Map<String, dynamic> firestoreDocument) =>
       NotificationModel(
           notificacao: firestoreDocument['notificacao'],
           textoNoitificacao: firestoreDocument['textoNoitificacao'],
