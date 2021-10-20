@@ -145,33 +145,43 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
                     FirestoreService().saveBloodglucose(mb);
 
                     if (int.parse(bloodglucoseController.text) <= 70) {
-                      showNotificationNiveisNormais();
-                      notificacao =
-                          'Alerta Glicemia- Glicemia em níveis baixos!';
-                      textoNoitificacao =
-                          'Glicemia em níveis baixos! O que fazer? A hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.';
-                      NotificationModel notificationModel =
-                          new NotificationModel(
-                              notificacao: notificacao,
-                              textoNoitificacao: textoNoitificacao,
-                              horario: dropdownValue.text,
-                              dataAtual: DateTime.now().toString(),
-                              dataFormatada: dataFormatter);
-                      FirestoreService().saveNotification(notificationModel);
-                    } else if (int.parse(bloodglucoseController.text) >= 100) {
-                      showNotificationNiveisAlterados();
-                      notificacao =
-                          'Alerta Glicemia- Glicemia com níveis altos!';
-                      textoNoitificacao =
-                          'Cuidado! Glicemia com níveis altos! O que fazer? Insira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.';
-                      NotificationModel notificationModel =
-                          new NotificationModel(
-                              notificacao: notificacao,
-                              textoNoitificacao: textoNoitificacao,
-                              horario: dropdownValue.text,
-                              dataAtual: DateTime.now().toString(),
-                              dataFormatada: dataFormatter);
-                      FirestoreService().saveNotification(notificationModel);
+                      showNotification(
+                          'Alerta Glicemia',
+                          'Cuidado, glicemia com níveis baixos! O que fazer? Clique para saber mais!',
+                          'Cuidado, calorias em níveis baixos! \nO que fazer? \n\nA hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.');
+                      saveNotification(
+                          'Alerta Glicemia- Glicemia em níveis baixos!',
+                          'Glicemia em níveis baixos! O que fazer? A hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.');
+                    } else if (int.parse(bloodglucoseController.text) >= 115 &&
+                        dropdownValue.text == "Café da Manhã") {
+                      showNotification(
+                          'Alerta Glicemia',
+                          'Cuidado, glicemia com níveis altos! O que fazer? Clique para saber mais!',
+                          'Cuidado, glicemia com níveis altos!\nO que fazer? \n\nInsira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
+                      saveNotification(
+                          'Alerta Glicemia- Glicemia com níveis altos!',
+                          'Cuidado! Glicemia com níveis altos! O que fazer? Insira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
+                    } else if (int.parse(bloodglucoseController.text) >= 160 &&
+                        (dropdownValue.text == "Depois do Café da Manhã" ||
+                            dropdownValue.text == "Depois do Jantar")) {
+                      showNotification(
+                          'Alerta Glicemia',
+                          'Cuidado, glicemia com níveis altos! O que fazer? Clique para saber mais!',
+                          'Cuidado, glicemia com níveis altos!\nO que fazer? \n\nInsira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
+                      saveNotification(
+                          'Alerta Glicemia- Glicemia com níveis altos!',
+                          'Cuidado! Glicemia com níveis altos! O que fazer? Insira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
+                    } else if (int.parse(bloodglucoseController.text) >= 126 &&
+                        (dropdownValue.text == "Almoço" ||
+                            dropdownValue.text == "Café da Tarde" ||
+                            dropdownValue.text == "Jantar")) {
+                      showNotification(
+                          'Alerta Glicemia',
+                          'Cuidado, glicemia com níveis altos! O que fazer? Clique para saber mais!',
+                          'Cuidado, glicemia com níveis altos!\nO que fazer? \n\nInsira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
+                      saveNotification(
+                          'Alerta Glicemia- Glicemia com níveis altos!',
+                          'Cuidado! Glicemia com níveis altos! O que fazer? Insira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
                     }
                     showAlertDialog(context);
                   }
@@ -185,32 +195,23 @@ class _BloodGlucoseState extends State<BloodGlucoseScreen> {
     );
   }
 
-  showNotificationNiveisNormais() async {
+  showNotification(String titulo, String notificacao, String texto) async {
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'channel DESCRIPTION',
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Alerta Glicemia',
-        'Cuidado, glicemia em níveis baixos! O que fazer? Clique para saber mais!',
-        platform,
-        payload:
-            'Cuidado, calorias em níveis baixos! \nO que fazer? \n\nA hipoglicemia deve ser tratada rapidamente, por isso se estiver apresentando sintomas mais leves, como tontura, tome um suco de caixinha ou ingira algo doce imediatamente.');
+    await flutterLocalNotificationsPlugin.show(0, titulo, notificacao, platform,
+        payload: texto);
   }
 
-  showNotificationNiveisAlterados() async {
-    var android = new AndroidNotificationDetails(
-        'channel id', 'channel NAME', 'channel DESCRIPTION',
-        priority: Priority.high, importance: Importance.max);
-    var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Alerta Glicemia',
-        'Cuidado, glicemia com níveis altos! O que fazer? Clique para saber mais!',
-        platform,
-        payload:
-            'Cuidado, glicemia com níveis altos!\nO que fazer? \n\nInsira o medicamento recomendado pelo seu médico. Além disso, reduza o consumo de alimentos ricos em açúcar e massas, e faça atividades físicas regularmente.');
+  saveNotification(String notificacaoTitle, String textoNotific) {
+    NotificationModel notificationModel = new NotificationModel(
+        notificacao: notificacaoTitle,
+        textoNoitificacao: textoNotific,
+        horario: dropdownValue.text,
+        dataAtual: DateTime.now().toString(),
+        dataFormatada: dataFormatter);
+    FirestoreService().saveNotification(notificationModel);
   }
 }
 
@@ -226,7 +227,44 @@ void showAlertDialog(BuildContext context) {
             ));
       });
   AlertDialog alerta = AlertDialog(
-    content: Text("Glicemia salva com sucesso!"),
+    title: Text("Glicemia salva com sucesso!"),
+    content: Column(mainAxisSize: MainAxisSize.min, children: [
+      Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        color: Color(0xFFFFD185),
+        child: Column(mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.warning, color: Colors.black),
+            Text(
+              "\n ATENÇÃO! \n",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              'Depois de uma refeição, o nível normal é entre 70 e 140 mg/dL. \n '
+              'Depois de comer, os pacientes com diabetes não controlada apresentam valores superiores. \n'
+              'Isto ocorre porque o hormônio responsável por retirar a glicose do sangue para dentro das células - \n'
+              'insulina - existe em pouca quantidade, ou porque existe diminuição da sensibilidade à insulina normal. \n'
+              'Uma glicose 150 mg/dL já não é normal, por exemplo. \n '
+              'Este valor varia, não só de pessoa para pessoa, como com o alimentos incluídos na refeição e outras variantes\n'
+              'como o estresse emocional ou estado de doença. \n',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    ]),
     actions: [
       okButton,
     ],
