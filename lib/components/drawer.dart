@@ -65,9 +65,9 @@ class Menu extends StatelessWidget {
               }),
           ListTile(
             leading: Icon(
-              Icons.warning_amber_outlined,
+              Icons.notifications_none_rounded,
             ),
-            title: Text("Alertas"),
+            title: Text("Notificações"),
             onTap: () {
               Navigator.push(
                 context,

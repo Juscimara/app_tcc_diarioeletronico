@@ -65,11 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       var msg = '';
       if (e.code == 'user-not-found') {
-        msg = 'Usuário não encontrado';
+        msg = 'Usuário não encontrado! Faça seu cadastro no link abaixo.';
       } else if (e.code == 'wrong-password') {
-        msg = "Senha incorreta";
+        msg = "Senha incorreta! Digite novamente.";
       } else {
-        msg = "Ouve um erro inesperado, tente novamente";
+        msg = "Ocorreu um erro inesperado, verifique se seu email e senha estão corretos e tente novamente!";
       }
       alert(msg);
     }

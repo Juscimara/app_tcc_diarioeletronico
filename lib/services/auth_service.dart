@@ -4,20 +4,9 @@ class AuthService {
   static Future<User> signUpUser({String email, String senha}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User user;
-    try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: senha);
       user = userCredential.user;
-    } on FirebaseException catch (e) {
-      if (e.code == 'weak-password') {
-        print('Senha deve ter no mínimo 6 caracteres');
-      } else if (e.code == 'email-already-in-use') {
-        print("Email ja cadastrado");
-      } else {
-        print('Erro');
-      }
-    }
-
     return user;
   }
 

@@ -7,6 +7,7 @@ import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
+import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,21 @@ class _HistoryState extends State<HistoryScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
         title: Text("Histórico"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AlertsScreen(),
+                  ));
+            },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(15),
