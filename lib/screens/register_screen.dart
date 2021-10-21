@@ -33,46 +33,71 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _loading = false;
   final _formKey = GlobalKey<FormState>();
 
+  alert(msg) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Não foi possível efetuar seu cadastro'),
+        content: Text(msg),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => {Navigator.pop(context)},
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  var msg = '';
   Future<void> onRegister() async {
-    setState(() {
-      _loading = true;
-    });
-
-    if (_formKey.currentState.validate()) {
-      User authUser = await AuthService.signUpUser(
-        email: _emailController.text,
-        senha: _passwordController.text,
-      );
-
-      if (authUser != null) {
-        UserData user;
-        user = UserData(
-            id: authUser.uid,
-            name: _nameController.text,
-            email: _emailController.text,
-            phone: _phoneController.text,
-            password: _passwordController.text,
-            street: _streetController.text,
-            num: _numController.text,
-            district: _districtController.text,
-            cpf: _cpfController.text,
-            city: _cityController.text,
-            uf: _ufController.text,
-            weight: _weightController.text,
-            height: _heightController.text,
-            age: _ageController.text);
-        await FirestoreService().saveUser(user);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TermsScreen()),
+    try {
+      setState(() {
+        _loading = true;
+      });
+      if (_formKey.currentState.validate()) {
+        User authUser = await AuthService.signUpUser(
+          email: _emailController.text,
+          senha: _passwordController.text,
         );
+        if (authUser != null) {
+          UserData user;
+          user = UserData(
+              id: authUser.uid,
+              name: _nameController.text,
+              email: _emailController.text,
+              phone: _phoneController.text,
+              password: _passwordController.text,
+              street: _streetController.text,
+              num: _numController.text,
+              district: _districtController.text,
+              cpf: _cpfController.text,
+              city: _cityController.text,
+              uf: _ufController.text,
+              weight: _weightController.text,
+              height: _heightController.text,
+              age: _ageController.text);
+          await FirestoreService().saveUser(user);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TermsScreen()),
+          );
+        }
+      } else {
+        setState(() {
+          _loading = false;
+        });
+      }
+    } on FirebaseException catch (e) {
+      if (e.code == 'weak-password') {
+        alert('A senha deve ter no mínimo 6 caracteres! Digite novamente.');
+      } else if (e.code == 'email-already-in-use') {
+        alert('Email já cadastrado! Digite novamente.');
+      } else {
+        alert('Ocorreu um erro inesperado, tente novamente!');
       }
     }
-
-    setState(() {
-      _loading = false;
-    });
   }
 
   @override
@@ -140,9 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Senha obrigatória';
-                          } else if (value.length < 6) {
-                            return 'Senha pequena';
-                          }
+                          } 
                           return null;
                         },
                       ),
@@ -288,27 +311,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     )
                   ],
                 ),
-                _loading
-                    ? CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
-                            Colors.yellow[700]),
-                      )
-                    : Column(
-                        children: [
-                          Button(
-                              width: MediaQuery.of(context).size.width,
-                              heigth: 50,
-                              widget: Text(
-                                'Cadastrar',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              onPress: onRegister),
-                        ],
-                      ),
+                Column(
+                  children: [
+                    Button(
+                        width: MediaQuery.of(context).size.width,
+                        heigth: 50,
+                        widget: Text(
+                          'Cadastrar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPress: onRegister),
+                  ],
+                ),
               ],
             ),
           ),

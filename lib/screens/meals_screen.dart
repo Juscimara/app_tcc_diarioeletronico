@@ -319,7 +319,10 @@ class _RefeicaoState extends State<MealsScreen> {
                                       "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias.");
                                 }
                                 if (soma.Calorias > valorEsperadoCalorias) {
-                                  showNotificationNiveisCaloricosAltos();
+                                  showNotification(
+                                      'Alerta Refeição',
+                                      'Refeição com níveis caloricos muito altos!',
+                                      'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de calorias inserida.');
                                   saveNotification(
                                       'Alerta Refeição- Refeição com níveis caloricos muito altos!',
                                       'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a ingestão de calorias.');
@@ -332,16 +335,18 @@ class _RefeicaoState extends State<MealsScreen> {
                                     visibleCarbo = true;
                                   });
                                   saveNotification("Alerta Limites",
-                                      "Você já atingiu 90% do consumo carboidrato permitido diáriamente, diminua a ingestão de calorias.");
+                                      "Você já atingiu 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos.");
                                 }
 
                                 if (soma.CHO > valorEsperadoCarboidratos) {
-                                  showNotificationNiveisCaloricosAltos();
+                                  showNotification(
+                                      'Alerta Refeição',
+                                      'Refeição com níveis de carboidratos muito altos!',
+                                      'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de carboidratos inserida.');
                                   saveNotification(
                                       'Alerta Refeição- Refeição com níveis carboidratos muito altos!',
                                       'Você já ultrapassou o limite do consumo diário permitido, diminua a ingestão de carboiratos.');
                                 }
-
                                 showAlertDialog(context);
                               } else
                                 showAlertDialogError(context);
@@ -358,26 +363,23 @@ class _RefeicaoState extends State<MealsScreen> {
     );
   }
 
-  showNotificationNiveisCaloricosAltos() async {
+  showNotification(String titulo, String notificacao, String texto) async {
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'channel DESCRIPTION',
         priority: Priority.high, importance: Importance.max);
     var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(0, 'Alerta Refeição',
-        'Refeição com níveis caloricos muito altos!', platform,
-        payload:
-            'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de calorias inserida.');
+    await flutterLocalNotificationsPlugin.show(0, titulo, notificacao, platform,
+        payload: texto);
   }
 
-  showNotificationNiveisCarboidratosAltos() async {
-    var android = new AndroidNotificationDetails(
-        'channel id', 'channel NAME', 'channel DESCRIPTION',
-        priority: Priority.high, importance: Importance.max);
-    var platform = new NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(0, 'Alerta Refeição',
-        'Refeição com níveis de carboidratos muito altos!', platform,
-        payload:
-            'Você já ultrapassou o limite de consumo diário permitido no dia, diminua a quantidade de carboidratos inserida.');
+  saveNotification(String notificacaoTitle, String textoNotific) {
+    NotificationModel notificationModel = new NotificationModel(
+        notificacao: notificacaoTitle,
+        textoNoitificacao: textoNotific,
+        horario: dropdownValue.text,
+        dataAtual: DateTime.now().toString(),
+        dataFormatada: dataFormatter);
+    FirestoreService().saveNotification(notificationModel);
   }
 
   showAlertDialog(BuildContext context) {
@@ -393,76 +395,81 @@ class _RefeicaoState extends State<MealsScreen> {
         });
     AlertDialog alerta = AlertDialog(
       title: Text("Refeição salva com sucesso!"),
-      content: Column(mainAxisSize: MainAxisSize.min, children: [
-        visibleCho
-            ? Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                color: Color(0xFFFFD185),
-                child: Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Column(
-                    children: [
-                      Icon(Icons.notifications_on, color: Colors.black),
-                      Text(
-                        "\n CUIDADO! \n",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            visibleCho
+                ? Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    color: Color(0xFFFFD185),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Column(
+                        children: [
+                          Icon(Icons.notifications_on, color: Colors.black),
+                          Text(
+                            "CUIDADO! \n",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
+                    ),
+                  )
+                : Container(),
+            visibleCarbo
+                ? Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    color: Color(0xFFFFD185),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Column(
+                        children: [
+                          Icon(Icons.notifications_on, color: Colors.black),
+                          Text(
+                            "CUIDADO! \n",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "Você já atingiu 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos. \n",
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              )
-            : Container(),
-        visibleCarbo
-            ? Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                color: Color(0xFFFFD185),
-                child: Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Column(
-                    children: [
-                      Icon(Icons.notifications_on, color: Colors.black),
-                      Text(
-                        "\n CUIDADO! \n",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        "Você já atingiu 90% do consumo carboidrato permitido diáriamente, diminua a ingestão de calorias. \n",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            : Container()
-      ]),
+                    ),
+                  )
+                : Container()
+          ],
+        ),
+      ),
       actions: [
         okButton,
       ],
@@ -474,16 +481,6 @@ class _RefeicaoState extends State<MealsScreen> {
         return alerta;
       },
     );
-  }
-
-  saveNotification(String notificacaoTitle, String textoNotific) {
-    NotificationModel notificationModel = new NotificationModel(
-        notificacao: notificacaoTitle,
-        textoNoitificacao: textoNotific,
-        horario: dropdownValue.text,
-        dataAtual: DateTime.now().toString(),
-        dataFormatada: dataFormatter);
-    FirestoreService().saveNotification(notificationModel);
   }
 
   void showAlertDialogError(BuildContext context) {
