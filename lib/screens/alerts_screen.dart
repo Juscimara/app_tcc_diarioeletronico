@@ -16,7 +16,7 @@ class _AlertsState extends State<AlertsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF26A69A),
-        title: Text("Histórico de Alertas"),
+        title: Text("Histórico de Notificações"),
       ),
       body: SafeArea(
         child: StreamBuilder<List<NotificationModel>>(
@@ -25,46 +25,47 @@ class _AlertsState extends State<AlertsScreen> {
               if (snapshot.hasData) {
                 List<NotificationModel> notifications = snapshot.data ?? [];
                 return ListView.builder(
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          color: Color(0xFFFFD185),
-                          child: Column(
-                            children: [
-                              Icon(Icons.notifications),
-                              Text(
-                                '\n Título: ' +
-                                    notifications[index].notificacao +
-                                    '\n' +
-                                    'Data: ' +
-                                    notifications[index].dataFormatada +
-                                    ' Horário: ' +
-                                    notifications[index].horario +
-                                    '\n\n' +
-                                    notifications[index].textoNoitificacao +
-                                    '\n',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
+                    itemCount: notifications.length,
+                    itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 5),
+                          child: Card(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                            ],
-                          ))),
-                );
-              } else
+                              color: Color(0xFFFFD185),
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Column(
+                                    children: [
+                                      Icon(Icons.notifications),
+                                      Text(
+                                        '\n Título: ' +
+                                            notifications[index].notificacao +
+                                            '\n' +
+                                            'Data: ' +
+                                            notifications[index].dataFormatada +
+                                            ' Horário: ' +
+                                            notifications[index].horario +
+                                            '\n\n' +
+                                            notifications[index]
+                                                .textoNoitificacao +
+                                            '\n',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ))),
+                        ));
+              } else {
                 return Center(
-                  child: CircularProgressIndicator(
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(Color(0xFF26A69A)),
-                  ),
+                  child: Text('Nenhum item encontrado!'),
                 );
+              }
             }),
       ),
     );

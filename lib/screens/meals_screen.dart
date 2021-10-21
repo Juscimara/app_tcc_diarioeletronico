@@ -401,27 +401,30 @@ class _RefeicaoState extends State<MealsScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 color: Color(0xFFFFD185),
-                child: Column(
-                  children: [
-                    Icon(Icons.notifications_on, color: Colors.black),
-                    Text(
-                      "\n ATENÇÃO! \n",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Column(
+                    children: [
+                      Icon(Icons.notifications_on, color: Colors.black),
+                      Text(
+                        "\n CUIDADO! \n",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
+                      Text(
+                        "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             : Container(),
@@ -432,27 +435,30 @@ class _RefeicaoState extends State<MealsScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 color: Color(0xFFFFD185),
-                child: Column(
-                  children: [
-                    Icon(Icons.notifications_on, color: Colors.black),
-                    Text(
-                      "\n ATENÇÃO! \n",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Column(
+                    children: [
+                      Icon(Icons.notifications_on, color: Colors.black),
+                      Text(
+                        "\n CUIDADO! \n",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "Você já atingiu 90% do consumo carboidrato permitido diáriamente, diminua a ingestão de calorias. \n",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
+                      Text(
+                        "Você já atingiu 90% do consumo carboidrato permitido diáriamente, diminua a ingestão de calorias. \n",
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             : Container()
