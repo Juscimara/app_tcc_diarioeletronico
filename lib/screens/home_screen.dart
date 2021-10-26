@@ -15,65 +15,136 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF26A69A),
-        title: Text("Home"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AlertsScreen(),
-                  ));
-            },
-          )
-        ],
-      ),
-      body: (BloodglucoseRepository.listBloodglucose != null)
-          ? ListView.builder(
-              itemCount: BloodglucoseRepository.listBloodglucose.length,
-              itemBuilder: (BuildContext context, int i) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  child: ListTile(
-                    isThreeLine: true,
-                    title: Text(
-                      BloodglucoseRepository.listBloodglucose[i].glicemia,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    subtitle: Text(
-                      BloodglucoseRepository.listBloodglucose[i].glicemia ??
-                          "teste",
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 18,
-                      ),
-                    ),
-                    trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        color: Colors.yellow[900],
-                        iconSize: 28,
-                        onPressed: () => {}),
-                  ),
-                );
+        appBar: AppBar(
+          backgroundColor: Color(0xFF26A69A),
+          title: Text("Home"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AlertsScreen(),
+                    ));
               },
             )
-          : Center(
-              child: Text('Nenhum item encontrado!'),
+          ],
+        ),
+        backgroundColor: Colors.green[50],
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10.0,
+                ),
+                Column(children: [
+                  Text(
+                    "Dielly Justino",
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ]),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Card(
+                  margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  clipBehavior: Clip.antiAlias,
+                  color: Colors.white,
+                  elevation: 5.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 22.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "Idade",
+                                style: TextStyle(
+                                  color: Color(0xFF26A69A),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                "22",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "Peso",
+                                style: TextStyle(
+                                  color: Color(0xFF26A69A),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                "54kg",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "Altura",
+                                style: TextStyle(
+                                  color: Color(0xFF26A69A),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                "1.60",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-      drawer: Menu(),
-    );
+          ),
+        ));
   }
 }

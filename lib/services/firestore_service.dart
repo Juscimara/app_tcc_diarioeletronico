@@ -132,7 +132,7 @@ class FirestoreService {
             .toList());
   }
 
-  Future<List<List<historyModel>>> getHistory(
+  Future<List<List<historyModel>>> getHistorySnack(
       DateTime startDate, DateTime endDate) async {
     startDate = new DateTime(startDate.year, startDate.month, startDate.day);
     endDate = new DateTime(endDate.year, endDate.month, endDate.day + 1);
@@ -141,6 +141,35 @@ class FirestoreService {
         .collection('usuarios')
         .doc(id)
         .collection('refeicao')
+        .where('dataAtual', isGreaterThanOrEqualTo: startDate)
+        .where('dataAtual', isLessThanOrEqualTo: endDate)
+        .get()
+        .then(
+          (value) => value.docs
+              .map(
+                (e) => historyModel.fromFirestore(e.data()),
+              )
+              .toList(),
+        );
+
+    var list = result
+        .map((e) => (jsonDecode(e.alimentos) as List)
+            .map((e) => historyModel.fromFirestore(e))
+            .toList())
+        .toList();
+
+    return list;
+  }
+
+  Future<List<List<historyModel>>> getHistoryBloodglucose(
+    DateTime startDate, DateTime endDate) async {
+    startDate = new DateTime(startDate.year, startDate.month, startDate.day);
+    endDate = new DateTime(endDate.year, endDate.month, endDate.day + 1);
+    String id = AuthService.getCurrentUser().uid;
+    var result = await _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('glicemia')
         .where('dataAtual', isGreaterThanOrEqualTo: startDate)
         .where('dataAtual', isLessThanOrEqualTo: endDate)
         .get()
