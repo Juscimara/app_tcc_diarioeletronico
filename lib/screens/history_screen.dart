@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
-import 'package:app_tcc_diarioeletronico/models/foodView.dart';
+import 'package:app_tcc_diarioeletronico/components/input.dart';
+import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
-import 'package:app_tcc_diarioeletronico/models/history.dart';
-import 'package:app_tcc_diarioeletronico/repositorys/foods_repository.dart';
 import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
-import 'package:app_tcc_diarioeletronico/screens/home_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -23,16 +19,16 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryState extends State<HistoryScreen> {
   @override
-  List<FoodViewModel> food = [];
-  String dateSelected = "";
-  bool show = false;
-  TextEditingController qtdController = TextEditingController(text: '1');
-  TextEditingController textEditingValue = new TextEditingController();
+  bool visibleGlicemia = false, visibleRefeicao = false;
   TextEditingController dropdownValue = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
-  DateTime pickedDateInitial;
-  DateTime pickedDateFinal;
+  final _formKey = GlobalKey<FormState>();
+
+  DateTime starDate = DateTime(1900, 01, 01), endDate = DateTime.now();
+  DateFormat formatter = DateFormat('dd/MM/yyyy');
+  String starDateFormatter, endDateFormatter;
+
   @override
   void initState() {
     super.initState();
@@ -60,79 +56,66 @@ class _HistoryState extends State<HistoryScreen> {
           )
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(15),
-        child: Column(children: [
-          DateTimePicker(
-            type: DateTimePickerType.date,
-            locale: Locale('pt', "BR"),
-            dateMask: 'dd/MM/yyyy',
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-            icon: Icon(Icons.event),
-            dateLabelText: 'Data inicial',
-            onChanged: (date) => startDateController.text = date,
-            validator: (val) {
-              if (val.isEmpty)
-                return "Informe uma data";
-              else
-                return null;
-            },
-            onSaved: (val) => print(val),
-          ),
-          DateTimePicker(
-            type: DateTimePickerType.date,
-            locale: Locale('pt', "BR"),
-            dateMask: 'dd/MM/yyyy',
-            //initialValue: DateTime.now().toString(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-            icon: Icon(Icons.event),
-            dateLabelText: 'Data final',
-            onChanged: (date) => endDateController.text = date,
-            validator: (val) {
-              if (val.isEmpty)
-                return "Informe uma data";
-              else
-                return null;
-            },
-            onSaved: (val) => print(val),
-          ),
-          Text("\n"),
-          Dropdown(
-            options: ['Selecione', 'Refeição', 'Glicemia'],
-            text: "Selecione hitórico abaixo:",
-            controller: dropdownValue,
-            validator: (value) {
-              if (value == 'Selecione') {
-                return 'Informe';
-              }
-              return null;
-            },
-          ),
-          Autocomplete<String>(optionsBuilder: (textEditingValue) {
-            if (textEditingValue.text == '') {
-              return const Iterable<String>.empty();
-            }
-            return FoodsRepository.listAlimento
-                .where((alimento) => alimento.Alimento.toLowerCase()
-                    .contains(textEditingValue.text.toLowerCase()))
-                .map((alimentoModel) => alimentoModel.Alimento);
-          }, onSelected: (String selection) {
-            setState(() {
-              show = true;
-              dateSelected = selection;
-            });
-          }, fieldViewBuilder:
-              (context, controller, focusNode, onEditingComplete) {
-            this.textEditingValue = controller;
-            return Column(children: [
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(children: [
+              DateTimePicker(
+                type: DateTimePickerType.date,
+                locale: Locale('pt', "BR"),
+                dateMask: 'dd/MM/yyyy',
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+                icon: Icon(Icons.event),
+                dateLabelText: 'Data inicial',
+                onChanged: (date) => startDateController.text = date,
+                validator: (val) {
+                  if (val.isEmpty)
+                    return "Informe uma data";
+                  else
+                    return null;
+                },
+              ),
+              DateTimePicker(
+                type: DateTimePickerType.date,
+                locale: Locale('pt', "BR"),
+                dateMask: 'dd/MM/yyyy',
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+                icon: Icon(Icons.event),
+                dateLabelText: 'Data final',
+                onChanged: (date) => endDateController.text = date,
+                validator: (val) {
+                  if (val.isEmpty)
+                    return "Informe uma data";
+                  else
+                    return null;
+                },
+              ),
+              Text('\n'),
+              Dropdown(
+                options: [
+                  'Selecione',
+                  'Refeição',
+                  'Glicemia',
+                ],
+                text: "Selecione o que deseja visualizar",
+                controller: dropdownValue,
+                validator: (value) {
+                  if (value == 'Selecione') {
+                    return 'Selecione';
+                  }
+                  return null;
+                },
+              ),
               Button(
                 width: MediaQuery.of(context).size.width,
                 heigth: 50,
                 widget: Center(
                     child: Text(
-                  'Pesquisar histórico',
+                  'Pesquisar',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -140,156 +123,153 @@ class _HistoryState extends State<HistoryScreen> {
                   ),
                 )),
                 onPress: () {
-                  FirestoreService()
-                      .getHistory(DateTime.parse(startDateController.text),
-                          DateTime.parse(endDateController.text))
-                      .then((value) => {
+                  if (_formKey.currentState.validate()) {
+                    starDate = DateTime.parse(startDateController.text);
+                    endDate = DateTime.parse(endDateController.text);
+                    starDateFormatter = formatter.format(starDate);
+                    endDateFormatter = formatter.format(endDate);
 
+                    if (dropdownValue.text == "Glicemia") {
+                      setState(() {
+                        visibleGlicemia = true;
                       });
-                  /* setState(() {
-                    food.add(new FoodViewModel(
-                        alimento: alimento,
-                        quantidade: int.parse(qtdController.text)));
-                  }); */
-                 /*  .then((value) => {
-                            /* value.forEach((element) {
-                              var history = jsonDecode(element.alimentos); */
-                              print(value)
-                          /*   }) */
-                          }); */
+                    } else if (dropdownValue.text == "Refeição") {
+                      setState(() {
+                        visibleRefeicao = true;
+                      });
+                    }
+                  }
                 },
-              )
-            ]);
-          }),
-          Text("\n"),
-          show
-              ? Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17),
-                  ),
-                  color: Color(0xFFFFD185),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "\n Histórico de alimentação: \n",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Column(
-                        children: food
-                            .map(
-                              (e) => Container(
-                                child: Column(children: [
-                                  Text(
-                                    "Nome: " + e.alimento.Alimento,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+              ),
+              Text(
+                "\n DADOS ECONTRADOS:",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              visibleRefeicao
+                  ? FutureBuilder<List<FoodModel>>(
+                      future: FirestoreService()
+                          .getHistoryMeals(starDateFormatter, endDateFormatter),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<FoodModel> refeicao = snapshot.data ?? [];
+                          return Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: ListView.builder(
+                              itemCount: refeicao.length,
+                              itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
+                                child: Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  color: Color(0xFFFFD185),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 8),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '\n Glicemia aferida: ' +
+                                              refeicao[index].Alimento +
+                                              'mg/dL' +
+                                              '\n' +
+                                              'Data: ' +
+                                              refeicao[index].MedidaUsual +
+                                              ' Horário: ' +
+                                              refeicao[index].CHO.toString() +
+                                              '\n' +
+                                              ' Horário: ' +
+                                              refeicao[index]
+                                                  .Calorias
+                                                  .toString() +
+                                              '\n' +
+                                              ' Horário: ' +
+                                              refeicao[index]
+                                                  .quantidade
+                                                  .toString() +
+                                              '\n',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    "Quantidade: " + e.quantidade.toString(),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Medida: " + e.alimento.MedidaUsual,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Gramas ou Ml: " +
-                                        (e.alimento.gOuMl * e.quantidade)
-                                            .toString(),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Carboidratos: " +
-                                        (e.alimento.CHO * e.quantidade)
-                                            .toString() +
-                                        "g",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Calorias: " +
-                                        (e.alimento.Calorias * e.quantidade)
-                                            .toString(),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  /* Text(
-                                    "Glicemia: " +
-                                        (e.alimento.Calorias * e.quantidade)
-                                            .toString(),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ), */
-                                  IconButton(
-                                    icon: Icon(Icons.remove_circle_outline),
-                                    color: Colors.black,
-                                    onPressed: () {
-                                      setState(() {
-                                        food.remove(e);
-                                      });
-                                    },
-                                  ),
-                                ]),
+                                ),
                               ),
-                            )
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
-        ]),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: Text('Nenhum item encontrado!'),
+                          );
+                        }
+                      },
+                    )
+                  : Container(),
+              visibleGlicemia
+                  ? StreamBuilder<List<MeasuredBloodglucoseModel>>(
+                      stream: FirestoreService().getHistoryBloodglucose(
+                          starDateFormatter, endDateFormatter),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<MeasuredBloodglucoseModel> glicemia =
+                              snapshot.data ?? [];
+                          return Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: ListView.builder(
+                              itemCount: glicemia.length,
+                              itemBuilder: (context, index) => Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                color: Color(0xFFFFD185),
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '\n Glicemia aferida: ' +
+                                            glicemia[index].glicemia +
+                                            'mg/dL' +
+                                            '\n' +
+                                            'Data: ' +
+                                            glicemia[index].data +
+                                            ' Horário: ' +
+                                            glicemia[index].horario +
+                                            '\n',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: Text('Nenhum item encontrado!'),
+                          );
+                        }
+                      },
+                    )
+                  : Container(),
+            ]),
+          ),
+        ),
       ),
       drawer: Menu(),
     );
   }
-}
-
-void showAlertDialog(BuildContext context) {
-  // ignore: deprecated_member_use
-  Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ));
-      });
-  AlertDialog alerta = AlertDialog(
-    content: Text("Glicemia salva com sucesso!"),
-    actions: [
-      okButton,
-    ],
-  );
-  showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) {
-      return alerta;
-    },
-  );
 }

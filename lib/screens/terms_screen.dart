@@ -116,7 +116,7 @@ class _TermsScreenState extends State<TermsScreen> {
                   Column(
                     children: [
                       Text(
-                        'Autorizar envio de dados',
+                        'Li e aceito os termos de uso.',
                         style: TextStyle(
                           fontSize: 15,
                         ),

@@ -15,4 +15,9 @@ class MeasuredBloodglucoseModel {
       'data': data
     };
   }
+
+  MeasuredBloodglucoseModel.fromFirestore(Map<String, dynamic> firestoredocument)
+      : glicemia = firestoredocument['glicemia'],
+        horario = firestoredocument['horario'],
+        data = firestoredocument['data'];
 }

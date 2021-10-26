@@ -132,32 +132,43 @@ class FirestoreService {
             .toList());
   }
 
-  Future<List<List<historyModel>>> getHistory(
-      DateTime startDate, DateTime endDate) async {
-    startDate = new DateTime(startDate.year, startDate.month, startDate.day);
-    endDate = new DateTime(endDate.year, endDate.month, endDate.day + 1);
+  Future<List<FoodModel>> getHistoryMeals(String dataInicial, String dataFinal) async {
     String id = AuthService.getCurrentUser().uid;
+
     var result = await _db
         .collection('usuarios')
         .doc(id)
         .collection('refeicao')
-        .where('dataAtual', isGreaterThanOrEqualTo: startDate)
-        .where('dataAtual', isLessThanOrEqualTo: endDate)
+        .where('data', isGreaterThanOrEqualTo: dataInicial)
+        .where('data', isLessThanOrEqualTo: dataFinal)
         .get()
-        .then(
-          (value) => value.docs
-              .map(
-                (e) => historyModel.fromFirestore(e.data()),
-              )
-              .toList(),
-        );
+        .then((value) => value.docs.map((e) => e.data()['alimentos']));
 
     var list = result
-        .map((e) => (jsonDecode(e.alimentos) as List)
-            .map((e) => historyModel.fromFirestore(e))
-            .toList())
-        .toList();
+        .map((e) => (jsonDecode(e) as List)
+            .map((e) => FoodModel.fromFirestoreConvertObject(e)))
+        .toList();   
 
-    return list;
+    //return list.map((e) => e.map((e) => e));
+  }
+
+  Stream<List<MeasuredBloodglucoseModel>> getHistoryBloodglucose(
+      String dataInicial, String dataFinal) {
+    String id = AuthService.getCurrentUser().uid;
+
+    return _db
+        .collection('usuarios')
+        .doc(id)
+        .collection('glicemia')
+        .where('data', isGreaterThanOrEqualTo: dataInicial)
+        .where('data', isLessThanOrEqualTo: dataFinal)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map(
+              (document) => MeasuredBloodglucoseModel.fromFirestore(
+                document.data(),
+              ),
+            )
+            .toList());
   }
 }
