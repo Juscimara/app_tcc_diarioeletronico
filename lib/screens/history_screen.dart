@@ -1,7 +1,6 @@
 import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
-import 'package:app_tcc_diarioeletronico/components/input.dart';
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';

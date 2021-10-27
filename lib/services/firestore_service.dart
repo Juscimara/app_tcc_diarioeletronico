@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
 import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
@@ -132,7 +133,8 @@ class FirestoreService {
             .toList());
   }
 
-  Future<List<FoodModel>> getHistoryMeals(String dataInicial, String dataFinal) async {
+  Future<List<FoodModel>> getHistoryMeals(
+      String dataInicial, String dataFinal) async {
     String id = AuthService.getCurrentUser().uid;
 
     var result = await _db
@@ -147,9 +149,12 @@ class FirestoreService {
     var list = result
         .map((e) => (jsonDecode(e) as List)
             .map((e) => FoodModel.fromFirestoreConvertObject(e)))
-        .toList();   
+        .toList();
 
-    //return list.map((e) => e.map((e) => e));
+    print("=======================================");
+    print(result);
+    print(list);
+    //return list;
   }
 
   Stream<List<MeasuredBloodglucoseModel>> getHistoryBloodglucose(

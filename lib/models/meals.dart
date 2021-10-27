@@ -17,4 +17,9 @@ class MealsModel {
       'data': dataFormatada
     };
   }
+
+  MealsModel.fromFirestore(Map<String, dynamic> firestoredocument)
+      : horario = firestoredocument['horario'],
+        dataFormatada = firestoredocument['dataFormatada'],
+        dataAtual = firestoredocument['dataAtual'];
 }
