@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
-import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
-import 'package:app_tcc_diarioeletronico/models/history.dart';
 import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/models/notification.dart';
 import 'package:app_tcc_diarioeletronico/models/users.dart';
@@ -29,7 +27,6 @@ class FirestoreService {
   }
 
   void _changePassword(String password) async {
-    //String user = await FirebaseAuth.instance.currentUser.email;
     User user = await FirebaseAuth.instance.currentUser;
     user.updatePassword(password).then((_) {
       print("Senha alterada com sucesso!");
@@ -71,20 +68,14 @@ class FirestoreService {
     return null;
   }
 
-  Future<FoodModel> getMeals() async {
+  Future<FoodModel> getMeals(String data) async {
     String id = AuthService.getCurrentUser().uid;
-
-    DateTime data = DateTime.now();
-    data = new DateTime(data.year, data.month, data.day);
-    DateTime dataNova = DateTime.now();
-    dataNova = new DateTime(dataNova.year, dataNova.month, dataNova.day + 1);
 
     var result = await _db
         .collection('usuarios')
         .doc(id)
-        .collection('refeicao')
-        .where('dataAtual', isGreaterThanOrEqualTo: data)
-        .where('dataAtual', isLessThanOrEqualTo: dataNova)
+        .collection('refeicao') 
+        .where('data', isGreaterThanOrEqualTo: data)
         .get()
         .then((value) => value.docs.map((e) => e.data()['alimentos']));
 
@@ -101,7 +92,7 @@ class FirestoreService {
         somaCho += (list[i].toList()[j]).CHO;
       }
     }
-
+    
     return new FoodModel(CHO: somaCho, Calorias: somaCal);
   }
 
@@ -133,28 +124,22 @@ class FirestoreService {
             .toList());
   }
 
-  Future<List<FoodModel>> getHistoryMeals(
+  Future<List<MealsModel>> getHistoryMeals(
       String dataInicial, String dataFinal) async {
     String id = AuthService.getCurrentUser().uid;
 
-    var result = await _db
+    var dados = await _db
         .collection('usuarios')
         .doc(id)
         .collection('refeicao')
         .where('data', isGreaterThanOrEqualTo: dataInicial)
         .where('data', isLessThanOrEqualTo: dataFinal)
+        .orderBy('data')
         .get()
-        .then((value) => value.docs.map((e) => e.data()['alimentos']));
+        .then((value) => value.docs.map((e) => e.data()));
 
-    var list = result
-        .map((e) => (jsonDecode(e) as List)
-            .map((e) => FoodModel.fromFirestoreConvertObject(e)))
-        .toList();
-
-    print("=======================================");
-    print(result);
-    print(list);
-    //return list;
+    var meals = dados.map((e) => MealsModel.fromFirestore(e)).toList();
+    return meals;
   }
 
   Stream<List<MeasuredBloodglucoseModel>> getHistoryBloodglucose(

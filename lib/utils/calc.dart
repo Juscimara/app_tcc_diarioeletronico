@@ -34,8 +34,8 @@ Future<double> calcCalories() async {
   return calories;
 }
 
-Future<int> calcCarbo() async {
+Future<double> calcCarbo() async {
   double calories = await calcCalories();
-  double carbo = (calories * 0.55) / 4;
-  return carbo.toInt();
+  int carbo = ((calories * 0.55) / 4).toInt();
+  return carbo.toDouble();
 }

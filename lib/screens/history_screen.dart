@@ -2,7 +2,9 @@ import 'package:app_tcc_diarioeletronico/components/button.dart';
 import 'package:app_tcc_diarioeletronico/components/drawer.dart';
 import 'package:app_tcc_diarioeletronico/components/dropdown.dart';
 import 'package:app_tcc_diarioeletronico/models/bloodglucose.dart';
+import 'package:app_tcc_diarioeletronico/models/foodView.dart';
 import 'package:app_tcc_diarioeletronico/models/foods.dart';
+import 'package:app_tcc_diarioeletronico/models/meals.dart';
 import 'package:app_tcc_diarioeletronico/screens/alerts_screen.dart';
 import 'package:app_tcc_diarioeletronico/services/firestore_service.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +71,7 @@ class _HistoryState extends State<HistoryScreen> {
                 lastDate: DateTime.now(),
                 icon: Icon(Icons.event),
                 dateLabelText: 'Data inicial',
+                cursorColor: Colors.red,
                 onChanged: (date) => startDateController.text = date,
                 validator: (val) {
                   if (val.isEmpty)
@@ -131,10 +134,12 @@ class _HistoryState extends State<HistoryScreen> {
                     if (dropdownValue.text == "Glicemia") {
                       setState(() {
                         visibleGlicemia = true;
+                        visibleRefeicao = false;
                       });
                     } else if (dropdownValue.text == "Refeição") {
                       setState(() {
                         visibleRefeicao = true;
+                        visibleGlicemia = false;
                       });
                     }
                   }
@@ -148,12 +153,12 @@ class _HistoryState extends State<HistoryScreen> {
                 ),
               ),
               visibleRefeicao
-                  ? FutureBuilder<List<FoodModel>>(
+                  ? FutureBuilder<List<MealsModel>>(
                       future: FirestoreService()
                           .getHistoryMeals(starDateFormatter, endDateFormatter),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          List<FoodModel> refeicao = snapshot.data ?? [];
+                          List<MealsModel> refeicao = snapshot.data ?? [];
                           return Container(
                             height: MediaQuery.of(context).size.height,
                             child: ListView.builder(
@@ -172,24 +177,46 @@ class _HistoryState extends State<HistoryScreen> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          '\n Glicemia aferida: ' +
-                                              refeicao[index].Alimento +
-                                              'mg/dL' +
+                                          '\n Lista de Alimentos: ' +
+                                              '\n Nome: ' +
+                                              (refeicao[index].alimentos)
+                                                  .map((a) =>
+                                                      a.alimento.Alimento)
+                                                  .join(', ')
+                                                  .toString() +
+                                              '\n Quantidade: ' +
+                                              (refeicao[index].alimentos)
+                                                  .map((a) =>
+                                                      a.alimento.quantidade)
+                                                  .join(', ')
+                                                  .toString() +
+                                              '\n Medida Usual: ' +
+                                              (refeicao[index].alimentos)
+                                                  .map((a) =>
+                                                      a.alimento.MedidaUsual)
+                                                  .join(', ')
+                                                  .toString() +
+                                              '\n Gramas ou Ml: ' +
+                                              (refeicao[index].alimentos)
+                                                  .map((a) => a.alimento.gOuMl)
+                                                  .join(', ')
+                                                  .toString() +
+                                              '\n Calorias: ' +
+                                              (refeicao[index].alimentos)
+                                                  .map((a) =>
+                                                      a.alimento.Calorias)
+                                                  .join(', ')
+                                                  .toString() +
+                                              '\n Carboidratos: ' +
+                                              (refeicao[index].alimentos)
+                                                  .map((a) => a.alimento.CHO)
+                                                  .join(', ')
+                                                  .toString() +
                                               '\n' +
                                               'Data: ' +
-                                              refeicao[index].MedidaUsual +
+                                              refeicao[index].dataFormatada +
                                               ' Horário: ' +
-                                              refeicao[index].CHO.toString() +
-                                              '\n' +
-                                              ' Horário: ' +
-                                              refeicao[index]
-                                                  .Calorias
-                                                  .toString() +
-                                              '\n' +
-                                              ' Horário: ' +
-                                              refeicao[index]
-                                                  .quantidade
-                                                  .toString() +
+                                              refeicao[index].horario +
                                               '\n',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -205,9 +232,7 @@ class _HistoryState extends State<HistoryScreen> {
                             ),
                           );
                         } else {
-                          return Center(
-                            child: Text('Nenhum item encontrado!'),
-                          );
+                          return Center(child: Text('Nenhum item encontrado!'));
                         }
                       },
                     )
@@ -257,9 +282,7 @@ class _HistoryState extends State<HistoryScreen> {
                             ),
                           );
                         } else {
-                          return Center(
-                            child: Text('Nenhum item encontrado!'),
-                          );
+                          return Center(child: Text('Nenhum item encontrado!'));
                         }
                       },
                     )

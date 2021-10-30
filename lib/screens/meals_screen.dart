@@ -299,11 +299,11 @@ class _RefeicaoState extends State<MealsScreen> {
                                 MealsModel r = new MealsModel(
                                     alimentos: food,
                                     horario: dropdownValue.text,
-                                    dataAtual: DateTime.now(),
+                                    dataAtual: DateTime.now().toString(),
                                     dataFormatada: dataFormatter);
-                                FirestoreService().saveMeals(r);
+                                FirestoreService().saveMeals(r);  
 
-                                var soma = await FirestoreService().getMeals();
+                                var soma = await FirestoreService().getMeals(dataFormatter);
                                 var valorEsperadoCalorias =
                                     await calcCalories();
                                 var valorEsperadoCarboidratos =
@@ -311,12 +311,12 @@ class _RefeicaoState extends State<MealsScreen> {
 
                                 if (((0.9 * valorEsperadoCalorias) <
                                         valorEsperadoCalorias) &&
-                                    soma.Calorias < valorEsperadoCalorias) {
+                                    soma.Calorias > (0.9 * valorEsperadoCalorias)) {
                                   setState(() {
                                     visibleCho = true;
                                   });
                                   saveNotification("Alerta Limites",
-                                      "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias.");
+                                      "Você já atingiu ou ultrapassou 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias.");
                                 }
                                 if (soma.Calorias > valorEsperadoCalorias) {
                                   showNotification(
@@ -330,12 +330,12 @@ class _RefeicaoState extends State<MealsScreen> {
 
                                 if (((0.9 * valorEsperadoCarboidratos) <
                                         valorEsperadoCarboidratos) &&
-                                    soma.CHO < valorEsperadoCarboidratos) {
+                                    soma.CHO > ( 0.9 * valorEsperadoCarboidratos)) {
                                   setState(() {
                                     visibleCarbo = true;
                                   });
                                   saveNotification("Alerta Limites",
-                                      "Você já atingiu 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos.");
+                                      "Você já atingiu ou ultrapassou 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos.");
                                 }
 
                                 if (soma.CHO > valorEsperadoCarboidratos) {
@@ -421,7 +421,7 @@ class _RefeicaoState extends State<MealsScreen> {
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            "Você já atingiu 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
+                            "Você já atingiu ou ultrapassou 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
                             style: TextStyle(
                               fontSize: 22,
                               color: Colors.black,
@@ -455,7 +455,7 @@ class _RefeicaoState extends State<MealsScreen> {
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            "Você já atingiu 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos. \n",
+                            "Você já atingiu ou ultrapassou 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos. \n",
                             style: TextStyle(
                               fontSize: 22,
                               color: Colors.black,

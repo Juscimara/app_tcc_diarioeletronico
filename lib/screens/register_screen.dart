@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               district: _districtController.text,
               cpf: _cpfController.text,
               city: _cityController.text,
-              uf: _ufController.text,
+              uf: _ufController.text.toUpperCase(),
               weight: _weightController.text,
               height: _heightController.text,
               age: _ageController.text);

@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'package:app_tcc_diarioeletronico/models/foodView.dart';
+import 'package:app_tcc_diarioeletronico/models/foods.dart';
 
 class MealsModel {
   List<FoodViewModel> alimentos;
   String horario;
-  DateTime dataAtual;
+  String dataAtual;
   String dataFormatada;
 
   MealsModel(
@@ -19,7 +21,19 @@ class MealsModel {
   }
 
   MealsModel.fromFirestore(Map<String, dynamic> firestoredocument)
-      : horario = firestoredocument['horario'],
-        dataFormatada = firestoredocument['dataFormatada'],
-        dataAtual = firestoredocument['dataAtual'];
+      : alimentos =
+            (jsonDecode(firestoredocument['alimentos']) as List<dynamic>)
+                .map((e) {
+          var foodView = new FoodViewModel();
+          var food = new FoodModel();
+          food.Alimento = e["alimento"];
+          food.gOuMl = e["gOuMlResult"];
+          food.Calorias = e["Calorias"];
+          food.CHO = e["CHO"];
+          food.quantidade = e["quantidade"];
+          foodView.alimento = food;
+          return foodView;
+        }).toList(),
+        horario = firestoredocument['horario'],
+        dataFormatada = firestoredocument['data'];
 }
