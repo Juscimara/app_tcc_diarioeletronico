@@ -190,12 +190,6 @@ class _HistoryState extends State<HistoryScreen> {
                                                       a.alimento.quantidade)
                                                   .join(', ')
                                                   .toString() +
-                                              '\n Medida Usual: ' +
-                                              (refeicao[index].alimentos)
-                                                  .map((a) =>
-                                                      a.alimento.MedidaUsual)
-                                                  .join(', ')
-                                                  .toString() +
                                               '\n Gramas ou Ml: ' +
                                               (refeicao[index].alimentos)
                                                   .map((a) => a.alimento.gOuMl)
