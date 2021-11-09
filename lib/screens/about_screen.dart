@@ -32,7 +32,7 @@ class _AboutScreenState extends State<AboutScreen> {
           )
         ],
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(40.0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +54,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     'porque os carboidratos \n tendem '
                     'a ter maior efeito \n na sua glicemia. \n ',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -68,12 +68,12 @@ class _AboutScreenState extends State<AboutScreen> {
                       'https://diabetes.org.br/e-book/manual-de-contagem-de-carboidratos/');
                 },
                 width: MediaQuery.of(context).size.width,
-                heigth: 60,
+                heigth: 65,
                 widget: Center(
                   child: Text(
                     'Clique aqui para acessar o Manual de Contagem de Carbiodratos da SBD (Sociedade Brasileira de Diabetes)',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
