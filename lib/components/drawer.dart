@@ -79,7 +79,7 @@ class Menu extends StatelessWidget {
             leading: Icon(
               Icons.info_outline,
             ),
-            title: Text("Entenda a contagem"),
+            title: Text("Entenda a Contagem"),
             onTap: () {
               Navigator.push(
                 context,
