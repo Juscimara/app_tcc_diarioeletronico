@@ -199,30 +199,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-                            Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    "Cidade",
-                                    style: TextStyle(
-                                      color: Color(0xFF26A69A),
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                  Text(
-                                    user.city + "- " + user.uf,
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.black,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -244,10 +220,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Text(
-                                    "Total de calorias a serem consumidas: ",
+                                    "Calorias a consumir: ",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -255,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     calorias.toString() + "Kcal",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ],
@@ -267,10 +243,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                "Total de calorias já consumidas: ",
+                                "Calorias já consumidas: ",
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -278,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 f.Calorias.toString() + "Kcal",
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 20,
+                                  fontSize: 18,
                                 ),
                               ),
                             ],
@@ -316,10 +292,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Text(
-                                    "Total de carboidratos a serem consumidos: ",
+                                    "Carboidratos a consumir: ",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -327,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     carbo.toString() + "g",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ],
@@ -339,10 +315,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                "Total de carboidratos já consumidos: ",
+                                "Carboidratos já consumidos: ",
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -350,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 f.CHO.toString() + "g",
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 20.0,
+                                  fontSize: 18,
                                 ),
                               ),
                             ],
