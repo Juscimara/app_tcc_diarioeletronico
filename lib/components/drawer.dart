@@ -91,7 +91,7 @@ class Menu extends StatelessWidget {
             leading: Icon(
               Icons.vpn_key_outlined,
             ),
-            title: Text("Redefinir senha"),
+            title: Text("Redefinir Senha"),
             onTap: () {
               Navigator.push(
                 context,
