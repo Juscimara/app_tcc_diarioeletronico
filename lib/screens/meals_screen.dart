@@ -316,7 +316,7 @@ class _RefeicaoState extends State<MealsScreen> {
                                     visibleCho = true;
                                   });
                                   saveNotification("Alerta Limites",
-                                      "Você já atingiu ou ultrapassou 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias.");
+                                      "Você já atingiu ou ultrapassou 90% do consumo calorico permitido diariamente, diminua a ingestão de calorias.");
                                 }
                                 if (soma.Calorias > valorEsperadoCalorias) {
                                   showNotification(
@@ -335,7 +335,7 @@ class _RefeicaoState extends State<MealsScreen> {
                                     visibleCarbo = true;
                                   });
                                   saveNotification("Alerta Limites",
-                                      "Você já atingiu ou ultrapassou 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos.");
+                                      "Você já atingiu ou ultrapassou 90% do consumo de carboidrato permitido diariamente, diminua a ingestão de carboidratos.");
                                 }
 
                                 if (soma.CHO > valorEsperadoCarboidratos) {
