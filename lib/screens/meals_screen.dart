@@ -421,7 +421,7 @@ class _RefeicaoState extends State<MealsScreen> {
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            "Você já atingiu ou ultrapassou 90% do consumo calorico permitido diáriamente, diminua a ingestão de calorias. \n",
+                            "Você já atingiu ou ultrapassou 90% do consumo calorico permitido diariamente, diminua a ingestão de calorias. \n",
                             style: TextStyle(
                               fontSize: 22,
                               color: Colors.black,
@@ -455,7 +455,7 @@ class _RefeicaoState extends State<MealsScreen> {
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            "Você já atingiu ou ultrapassou 90% do consumo de carboidrato permitido diáriamente, diminua a ingestão de carboidratos. \n",
+                            "Você já atingiu ou ultrapassou 90% do consumo de carboidrato permitido diariamente, diminua a ingestão de carboidratos. \n",
                             style: TextStyle(
                               fontSize: 22,
                               color: Colors.black,
